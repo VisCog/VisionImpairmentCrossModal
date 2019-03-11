@@ -87,8 +87,8 @@ try
             windowRect(4)/2, black);
         Screen('Flip', window);
         
-        %Get time stamp of first sound. Put sound on
-        time_stamp_sound1 = GetSecs;  sound(y440, Fs);
+        %Beep indicates new trial. Put beep sound on
+        time_stamp_sound1 = GetSecs; sound(y440, Fs);
         
         %% find the stimuli folders
         % load first stimulus
@@ -198,17 +198,11 @@ catch ME
 end
 Screen('DrawText', window, 'Experiment Finished.   Press Any Key To Exit',...
     windowRect(3)/2, windowRect(4)/2, black);
-Screen('Flip', window);
+Screen('Flip', window);  
 WaitSecs(1);
 sca;
 cd(Participant) %save data in the subject's folder
-% save(strcat(fileName, '.mat')); % why not just save everything as a mat file?
-%
-% cellwrite(fileName, response)
-% responseTable = cell2table(response, 'VariableNames',...
-%     {'trial' 'stimulus1' 'stimulus2' ...
-%     'responsetime_KBhit' 'KB_hit_key'});
-% writetable(responseTable, fileName)
+
 response = horzcat(trial, stimulusList, respMat);
 save(strcat(fileName, '.mat'), 'response')
 

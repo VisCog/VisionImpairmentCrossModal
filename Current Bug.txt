@@ -1,2 +1,11 @@
     {[1]}    {'AF11NEHL.JPG'}    {'AF30HAHR.JPG'}    {[-7.7195]}    {[74]}
 -> 'AF11NEHL.JPG' is a BLACK PICTURE
+
+
+
+
+
+
+%%FIXED
+- stimulus names are saved as strings and not structure arrays
+-> when save to .mat files, stimulus names are now shown
