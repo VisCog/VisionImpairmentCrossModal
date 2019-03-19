@@ -13,8 +13,8 @@ cd(homedir);
 
 %% trial variables
 
-ntrials = 5; %number of trials
-nStimulus = 6;  %CHANGE THE TOTAL NUMBER OF STIMULUS FILES YOU HAVE
+ntrials = 20; %number of trials
+% nStimulus = 6;  %CHANGE THE TOTAL NUMBER OF STIMULUS FILES YOU HAVE
 initpauseDur = 0.2; % initial pause after space bar
 stimDur = 1.5; % each face up for 1s
 pauseDur = 0.5; % interface gap of 0.5s
@@ -24,7 +24,7 @@ randomCondition = PseudoRandom(ntrials, 2, 2);
 [y440_long,Fs] = audioread([homedir filesep 'beep_sounds\440Hz_200ms.wav']);
 [y440,Fs] = audioread([homedir filesep 'beep_sounds\440Hz_50ms.wav']);
 [y220,Fs] = audioread([homedir filesep 'beep_sounds\220Hz_300ms.wav']);
-theSoundLocation = [homedir filesep 'voice_stimulus'];
+theSoundLocation = [homedir filesep 'voice_stimulus_test'];
 cd(theSoundLocation);
 addpath(genpath(theSoundLocation));
 
