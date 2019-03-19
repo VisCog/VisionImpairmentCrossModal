@@ -14,7 +14,6 @@ cd(homedir);
 %% trial variables
 
 ntrials = 20; %number of trials
-% nStimulus = 6;  %CHANGE THE TOTAL NUMBER OF STIMULUS FILES YOU HAVE
 initpauseDur = 0.2; % initial pause after space bar
 stimDur = 1.5; % each face up for 1s
 pauseDur = 0.5; % interface gap of 0.5s
