@@ -123,67 +123,6 @@ try
         [sound2,Fsound2] = audioread(secondSound);
         cd(homedir);
         
-        %         % initiate trial with space bar
-        %          go = 0;
-        %          while go == 0
-        %             [~, keysecs, keyCode] = KbCheck;
-        %             if keyCode(KbName('space')) == 1
-        %                 go = 1;
-        %                 time_stamp_KBhitSpace = keysecs;
-        %             end
-        %          end
-        %          WaitSecs(initpauseDur);
-        
-        %          % interval 1
-        %          Screen('DrawText', window, 'First sound', windowRect(3)/2,...
-        %              windowRect(4)/2, black);
-        %          Screen('Flip', window);
-        %          sound(y440, Fs);
-        %          WaitSecs(stimDur);
-        %          time_stamp_start_stim1 = GetSecs;
-        %          p1 = audioplayer(sound1,Fsound1); playblocking(p1);
-        %
-        %         % pause
-        %         Screen('DrawTexture', window, grayTexture);
-        %         Screen('Flip', window)
-        %         time_stamp_start_isi = GetSecs;
-        %         WaitSecs(pauseDur);
-        %
-        %         % interval 2
-        %         Screen('DrawText', window, 'Second sound', windowRect(3)/2,...
-        %             windowRect(4)/2, [232, 4, 156]);
-        %         Screen('Flip', window);
-        %         sound(y440, Fs);
-        %         WaitSecs(stimDur);
-        %         time_stamp_start_stim2 = GetSecs;
-        %         p9 = audioplayer(sound2,Fsound2); playblocking(p9);
-        
-        %         % pause
-        %         Screen('DrawTexture', window, grayTexture);
-        %         Screen('Flip', window);
-        %
-        %         %Wait for participant to press either f(different)/j(similar) key
-        %         go = 0;
-        %         while go == 0
-        %             [keyIsDown, keysecs, keyCode] = KbCheck;
-        %             if keyIsDown
-        %                if keyCode(KbName('f')) == 1
-        %                   KB_hit_key = KbName('f'); go = 1;
-        %                   time_stamp_KBhit = keysecs;
-        %                elseif keyCode(KbName('j')) == 1
-        %                   KB_hit_key = KbName('j'); go = 1;
-        %                   time_stamp_KBhit = keysecs;
-        %                else
-        %                   sound(y220, Fs);
-        %                   Screen('DrawText', window, 'Wrong key pressed!  Press Again',...
-        %                          windowRect(3)/2, windowRect(4)/2, black);
-        %                   Screen('Flip', window);
-        %                end
-        %                KbReleaseWait;
-        %                keyIsDown = 0;
-        %            end
-        %         end
-        
         % initiate trial with space bar
         go = 0;
         while go == 0
@@ -207,14 +146,6 @@ try
         stimulusList{t, 1} = firstSound;
         stimulusList{t, 2} = secondSound;
         
-%         while (condition == 1 && Kb_hit_key == KbName('f')) ||...
-%                 (condition == 2 && Kb_hit_key == KbName('j'))
-%             Screen('DrawText', window, 'Wrong answer! Redo trial!',...
-%                         windowRect(3)/2, windowRect(4)/2, black);
-%             Screen('Flip', window);
-%             [~, ~,~, ~, KB_hit_key] = PresentVoices();
-%         end
-%         Screen('DrawTexture', window, grayTexture);
     end 
      Screen('CloseAll'); clear mex
 catch ME
