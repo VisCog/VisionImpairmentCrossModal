@@ -7,7 +7,7 @@ function FaceRecognition(participantname)
 %
 % Function files used include: Psychtoolbox, makeBeep, PseudoRandom.m, cellwrite.m
 % Sound files used: 220Hz_300ms, 440helpHz_50ms
-%
+%i
 % 3/11/2019 Ione made the stimulus presentation a function
 % TO DO
 % error feedback if running as test
@@ -17,6 +17,10 @@ function FaceRecognition(participantname)
 clc; % clear command window
 close all;
 sca; % screen close all
+
+if ~exist('participantname')
+    participantname = 'TRAINING';
+end
 
 %% directories & subject's identifier
 
@@ -33,10 +37,10 @@ cd(homedir);
 %% trial variables
 
 ntrials = 5; %number of trials
-nStimulus = 35;
 initpauseDur = 0.2; % initial pause after space bar
 stimDur = 1.5; % each face up for 1s
 pauseDur = 0.5; % interface gap of 0.5s
+endoftrialpauseDur = 0.5;
 
 genderCat = {'Female', 'Male'};
 pictCategories = {'NES', 'NEHR', 'NEHL', 'HAS', 'HAHR', 'HAHL'};
@@ -51,6 +55,8 @@ randomCondition = PseudoRandom(ntrials, 2, 2, 6);
 trial = cell(ntrials, 1);
 respMat = cell(ntrials, 2);
 stimulusList = cell(ntrials, 2);
+KB_hit_key = [];
+time_stamp_KBhit = [];
 
 %% randomize stimulus order
 fnameShuffled = {'FemaleFiles', 'MaleFiles'};
@@ -97,7 +103,7 @@ try
         
         %% find the stimuli folders
         % load first stimulus
-        stimulus1Location = [theImageLocation filesep genderCat{gender}...
+        stimulus1Location = [theImag eLocation filesep genderCat{gender}...
             filesep fnameShuffled{gender}{t}];
         cd(stimulus1Location);
         tmp = dir(['*', pict1type, '*.jpg']);
@@ -158,60 +164,67 @@ try
         Screen('DrawTexture', window, grayTexture);
     end
 catch ME
+    cd(homedir);
     Screen('CloseAll'); clear mex
 end
 
 WaitSecs(1);
 sca;
 cd(participantname) %save data in the subject's folder
-
 response = horzcat(trial, stimulusList, respMat);
 save(strcat(fileName, '.mat'), 'response')
-end
+cd(homedir);
 
-function PresentFaces()
-WaitSecs(initpauseDur);
-
-% interval 1
-Screen('DrawTexture', window, imageTexture1, [], []);
-Screen('Flip', window);
-sound(y440, Fs);
-WaitSecs(stimDur);
-
-% pause
-Screen('DrawTexture', window, grayTexture);
-Screen('Flip', window);
-WaitSecs(pauseDur);
-
-% interval 2
-Screen('DrawTexture', window, imageTexture2, [], [], 0);
-Screen('Flip', window);
-sound(y440, Fs);
-WaitSecs(stimDur);
-
-% pause
-Screen('DrawTexture', window, grayTexture);
-Screen('Flip', window);
-%Wait for participantname to press either f(different)/j(similar) key
-go = 0;
-while go == 0
-    [keyIsDown, keysecs, keyCode] = KbCheck;
-    if keyIsDown
-        if keyCode(KbName('f')) == 1
-            KB_hit_key = KbName('f');go = 1;
-            time_stamp_KBhit = keysecs;
-            if condi
-        elseif keyCode(KbName('j')) == 1
-            KB_hit_key = KbName('j');go = 1;
-            time_stamp_KBhit = keysecs;
-        else
-            sound(y220, Fs);
-            Screen('DrawText', window, 'Wrong key pressed!  Press Again',...
-                windowRect(3)/2, windowRect(4)/2, black);
-            Screen('Flip', window);
+    function PresentFaces()
+        WaitSecs(initpauseDur);
+        
+        % interval 1
+        Screen('DrawTexture', window, imageTexture1, [], []);
+        Screen('Flip', window);
+        sound(y440, Fs);
+        WaitSecs(stimDur);
+        
+        % pause
+        Screen('DrawTexture', window, grayTexture);
+        Screen('Flip', window);
+        WaitSecs(pauseDur);
+        
+        % interval 2
+        Screen('DrawTexture', window, imageTexture2, [], [], 0);
+        Screen('Flip', window);
+        sound(y440, Fs);
+        WaitSecs(stimDur);
+        
+        % pause
+        Screen('DrawTexture', window, grayTexture);
+        Screen('Flip', window);
+        %Wait for participantname to press either f(different)/j(similar) key
+        go = 0;
+        while go == 0
+            [keyIsDown, keysecs, keyCode] = KbCheck;
+            if keyIsDown
+                if keyCode(KbName('f')) == 1
+                    KB_hit_key = KbName('f');go = 1;
+                    time_stamp_KBhit = keysecs;
+                    if condition == 1 % if incorrect
+                        sound(y440_long, Fs);
+                    end
+                elseif keyCode(KbName('j')) == 1
+                    KB_hit_key = KbName('j');go = 1;
+                    time_stamp_KBhit = keysecs;
+                    if condition == 2 % if incorrect
+                        sound(y440_long, Fs);
+                    end
+                else
+                    sound(y220, Fs);
+                    Screen('DrawText', window, 'Wrong key pressed!  Press Again',...
+                        windowRect(3)/2, windowRect(4)/2, blacfk);
+                    Screen('Flip', window);
+                end
+                KbReleaseWait;
+                keyIsDown = 0;
+            end
         end
-        KbReleaseWait;
-        keyIsDown = 0;
+        WaitSecs(endoftrialpauseDur);
     end
-end
-end
+% end

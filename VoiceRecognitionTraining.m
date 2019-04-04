@@ -1,4 +1,4 @@
-function VoiceRecognition(participantname)
+function VoiceRecognitionTraining(participantname)
 
 % Function file(s) use: PseudoRandom.m
 % Sound files used: 220Hz_300ms, 440Hz_50ms
@@ -268,13 +268,25 @@ cd(homedir);
                     time_stamp_KBhit = keysecs1;
                     if condition == 1 % if incorrect
                         sound(y440_long, Fs);
+                        Screen('DrawText', window, 'Wrong answer! Redo trial!',...
+                        windowRect(3)/2, windowRect(4)/2, black);
+                        Screen('Flip', window);
+                        [time_stamp_start_stim1, time_stamp_start_isi,...
+                              time_stamp_start_stim2, time_stamp_KBhit,...
+                              KB_hit_key] = PresentVoices();  
                     end
                 elseif keyCode1(KbName('j')) == 1
                     KB_hit_key = KbName('j');go = 1;
                     time_stamp_KBhit = keysecs1;
-                    if condition == 2
+                    if condition == 2 %if incorrect
                         sound(y440_long, Fs);
-                    end
+                        Screen('DrawText', window, 'Wrong answer! Redo trial!',...
+                        windowRect(3)/2, windowRect(4)/2, black);
+                        Screen('Flip', window);
+                        [time_stamp_start_stim1, time_stamp_start_isi,...
+                              time_stamp_start_stim2, time_stamp_KBhit,...
+                              KB_hit_key] = PresentVoices();  
+                    end    
                 else
                     sound(y220, Fs);
                     Screen('DrawText', window, 'Wrong key pressed!  Press Again',...
@@ -284,6 +296,7 @@ cd(homedir);
                 KbReleaseWait;
                 keyIsDown = 0;
             end
+            
         end
         WaitSecs(endoftrialpauseDur);
     end
