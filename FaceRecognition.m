@@ -49,17 +49,16 @@ randomCondition = PseudoRandom(ntrials, 2, 2, 6);
 [y440_long,Fs440_long] = audioread([homedir filesep 'beep_sounds\440Hz_200ms.wav']);
 [y440,Fs440] = audioread([homedir filesep 'beep_sounds\440Hz_50ms.wav']); % new trial sound
 [y220,Fs220] = audioread([homedir filesep 'beep_sounds\220Hz_300ms.wav']); % wrong keypress
-[wrong, FsWrong] = audioread([homedir filesep 'beep_sounds\wrongAnswer.wav']);
+% [wrong, FsWrong] = audioread([homedir filesep 'beep_sounds\wrongAnswer.wav']);
 
 %% Initialize all data structures to be saved to log file
 
 trial = cell(ntrials, 1);
 respMat = cell(ntrials, 2);
 stimulusList = cell(ntrials, 2);
-KB_hit_key = [];
-time_stamp_KBhit = [];
 
 %% randomize stimulus order
+
 fnameShuffled = {'FemaleFiles', 'MaleFiles'};
 for index = 1:length(genderCat)
     genderFolder = genderCat{index};
@@ -93,15 +92,15 @@ try
         
         gender = randomCondition(t, 1);
         condition = randomCondition(t, 2); %pick Different or Similar condition
-        pict1type = pictCategories{randomCondition(t, 3)};
+         pict1type = pictCategories{randomCondition(t, 3)};
         
         Screen('DrawText', window, 'New Trial', windowRect(3)/2, ...
             windowRect(4)/2, black);
         Screen('Flip', window);
         
         %First beep indicate start of trial.
-        time_stamp_beep_start_trial = GetSecs; sound(y440, Fs);
-        
+        time_stamp_beep_start_trial = GetSecs; sound(y440, Fs440);
+
         %% find the stimuli folders
         % load first stimulus
         stimulus1Location = [theImageLocation filesep genderCat{gender}...
@@ -167,15 +166,16 @@ try
         respMat{t, 7} = KB_hit_key;
         stimulusList{t, 1} = pict1Name;
         stimulusList{t, 2} = pict2Name;
-        Screen('DrawTexture', window, grayTexture);
+%         Screen('DrawTexture', window, grayTexture);
     end
+     Screen('CloseAll'); clear mex
 catch ME
     cd(homedir);
     Screen('CloseAll'); clear mex
 end
 
-WaitSecs(1);
-sca;
+% WaitSecs(1);
+% sca;
 cd(participantname) %save data in the subject's folder
 response = horzcat(trial, stimulusList, respMat);
 save(strcat(fileName, '.mat'), 'response')
@@ -217,21 +217,27 @@ cd(homedir);
                 if keyCode1(KbName('f')) == 1
                     KB_hit_key = KbName('f'); go = 1;
                     time_stamp_KBhit = keysecs1;
-                    if condition == 1 % if incorrect
-                        sound(wrong, FsWrong);
-                        Screen('DrawText', window, 'Wrong answer! Redo trial!',...
-                        windowRect(3)/2, windowRect(4)/2, black);
-                        Screen('Flip', window);
-                        [time_stamp_start_stim1, time_stamp_start_isi,...
-                              time_stamp_start_stim2, time_stamp_KBhit,...
-                              KB_hit_key] = PresentVoices(); 
-                    end
+%                     if condition == 1 % if incorrect
+%                         p3 = audioplayer(wrong, FsWrong); playblocking(p3);
+%                         Screen('DrawText', window, 'Wrong answer! Redo trial!',...
+%                         windowRect(3)/2, windowRect(4)/2, black);
+%                         Screen('Flip', window);
+%                         [time_stamp_start_stim1, time_stamp_start_isi,...
+%                               time_stamp_start_stim2, time_stamp_KBhit,...
+%                               KB_hit_key] = PresentFaces(); 
+%                     end
                 elseif keyCode1(KbName('j')) == 1
                     KB_hit_key = KbName('j');go = 1;
                     time_stamp_KBhit = keysecs1;
-                    if condition == 2 % if incorrect
-                        sound(wrong, FsWrong);
-                    end
+%                     if condition == 2 % if incorrect
+%                         p3 = audioplayer(wrong, FsWrong); playblocking(p3);
+%                         Screen('DrawText', window, 'Wrong answer! Redo trial!',...
+%                         windowRect(3)/2, windowRect(4)/2, black);
+%                         Screen('Flip', window);
+%                         [time_stamp_start_stim1, time_stamp_start_isi,...
+%                               time_stamp_start_stim2, time_stamp_KBhit,...
+%                               KB_hit_key] = PresentFaces(); 
+%                     end
                 else
                     sound(y220, Fs220);
                     Screen('DrawText', window, 'Wrong key pressed!  Press Again',...

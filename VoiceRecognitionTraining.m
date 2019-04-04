@@ -1,5 +1,11 @@
 function VoiceRecognitionTraining(participantname)
 
+% Displays people voices and subjects have to say if "same" or "different"
+% voices.
+% If participant answers incorrectly, the trial is repeated.
+% Saves trial by trial data
+%
+% written by Gg Tran & Ione Fine 2019
 % Function file(s) use: PseudoRandom.m
 % Sound files used: 220Hz_300ms, 440Hz_50ms, wrongAnswer
 
@@ -19,7 +25,7 @@ cd(homedir);
 
 %% trial variables
 
-ntrials = 2; %number of trials
+ntrials = 20; %number of trials
 initpauseDur = 0.2; % initial pause after space bar
 stimDur = 1.5; % each face up for 1s
 pauseDur = 0.5; % interface gap of 0.5s
@@ -191,7 +197,7 @@ cd(homedir);
                 if keyCode1(KbName('f')) == 1
                     KB_hit_key = KbName('f');go = 1;
                     time_stamp_KBhit = keysecs1;
-                    if condition == 1 % if incorrect
+                    if condition == 1 % if incorrect answer given
                         p3 = audioplayer(wrong, FsWrong); playblocking(p3);
                         Screen('DrawText', window, 'Wrong answer! Redo trial!',...
                         windowRect(3)/2, windowRect(4)/2, black);
@@ -203,7 +209,7 @@ cd(homedir);
                 elseif keyCode1(KbName('j')) == 1
                     KB_hit_key = KbName('j'); go = 1;
                     time_stamp_KBhit = keysecs1;
-                    if condition == 2 %if incorrect
+                    if condition == 2 % if incorrect answer given
                         p3 = audioplayer(wrong, FsWrong); playblocking(p3);
                         Screen('DrawText', window, 'Wrong answer! Redo trial!',...
                         windowRect(3)/2, windowRect(4)/2, black);
