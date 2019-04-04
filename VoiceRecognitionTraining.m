@@ -1,19 +1,19 @@
 function VoiceRecognitionTraining(participantname)
 
 % Function file(s) use: PseudoRandom.m
-% Sound files used: 220Hz_300ms, 440Hz_50ms
+% Sound files used: 220Hz_300ms, 440Hz_50ms, wrongAnswer
 
 close all; clc; sca;
 
 if ~exist('participantname')
     participantname = 'TRAINING';
 end
+
 %% directories & subject's identifier
 
 fileName = strcat(datestr(now, 'yyyy-mm-dd-HH-MM-SS'), '.mat');
 homedir = pwd;
 addpath(genpath('C:\ProgramFiles\PsychToolbox'))
-% Participant = 'CODE IDENTIFIER'; % PUT IN PARTICIPANT'S CODE IDENTIFIER
 mkdir(participantname) %make a new directory in their name, existed foldername will throw a warning
 cd(homedir);
 
@@ -27,9 +27,10 @@ endoftrialpauseDur = 0.5;
 
 %Randomize the conditions: male/female, similar/different);
 randomCondition = PseudoRandom(ntrials, 2, 2);
-[y440_long,Fs] = audioread([homedir filesep 'beep_sounds\440Hz_200ms.wav']);
+[y440_long,Fs440_long] = audioread([homedir filesep 'beep_sounds\440Hz_200ms.wav']);
 [y440,Fs] = audioread([homedir filesep 'beep_sounds\440Hz_50ms.wav']);
-[y220,Fs] = audioread([homedir filesep 'beep_sounds\220Hz_300ms.wav']);
+[y220,Fs220] = audioread([homedir filesep 'beep_sounds\220Hz_300ms.wav']);
+[wrong, FsWrong] = audioread([homedir filesep 'beep_sounds\wrongAnswer.wav']);
 theSoundLocation = [homedir filesep 'voice_stimuli'];
 cd(theSoundLocation);
 addpath(genpath(theSoundLocation));
@@ -38,11 +39,6 @@ addpath(genpath(theSoundLocation));
 trial = cell(ntrials, 1);
 respMat = cell(ntrials, 7);
 stimulusList = cell(ntrials, 2);
-% time_stamp_start_stim1 = [];
-% time_stamp_start_isi = [];
-% time_stamp_start_stim2 = [];
-% KB_hit_key = [];
-% time_stamp_KBhit = [];
 
 %Randomize both the Male & Female stimulus folders
 genderCat = {'Female', 'Male'};
@@ -87,8 +83,7 @@ try
         Screen('Flip', window);
         
         %First beep indicate start of trial.
-        time_stamp_beep_start_trial = GetSecs;
-        sound(y440, Fs);
+        time_stamp_beep_start_trial = GetSecs; sound(y440, Fs);
         
         %% find the stimuli folders
         % load first stimulus
@@ -123,67 +118,6 @@ try
         [sound2,Fsound2] = audioread(secondSound);
         cd(homedir);
         
-        %         % initiate trial with space bar
-        %          go = 0;
-        %          while go == 0
-        %             [~, keysecs, keyCode] = KbCheck;
-        %             if keyCode(KbName('space')) == 1
-        %                 go = 1;
-        %                 time_stamp_KBhitSpace = keysecs;
-        %             end
-        %          end
-        %          WaitSecs(initpauseDur);
-        
-        %          % interval 1
-        %          Screen('DrawText', window, 'First sound', windowRect(3)/2,...
-        %              windowRect(4)/2, black);
-        %          Screen('Flip', window);
-        %          sound(y440, Fs);
-        %          WaitSecs(stimDur);
-        %          time_stamp_start_stim1 = GetSecs;
-        %          p1 = audioplayer(sound1,Fsound1); playblocking(p1);
-        %
-        %         % pause
-        %         Screen('DrawTexture', window, grayTexture);
-        %         Screen('Flip', window)
-        %         time_stamp_start_isi = GetSecs;
-        %         WaitSecs(pauseDur);
-        %
-        %         % interval 2
-        %         Screen('DrawText', window, 'Second sound', windowRect(3)/2,...
-        %             windowRect(4)/2, [232, 4, 156]);
-        %         Screen('Flip', window);
-        %         sound(y440, Fs);
-        %         WaitSecs(stimDur);
-        %         time_stamp_start_stim2 = GetSecs;
-        %         p9 = audioplayer(sound2,Fsound2); playblocking(p9);
-        
-        %         % pause
-        %         Screen('DrawTexture', window, grayTexture);
-        %         Screen('Flip', window);
-        %
-        %         %Wait for participant to press either f(different)/j(similar) key
-        %         go = 0;
-        %         while go == 0
-        %             [keyIsDown, keysecs, keyCode] = KbCheck;
-        %             if keyIsDown
-        %                if keyCode(KbName('f')) == 1
-        %                   KB_hit_key = KbName('f'); go = 1;
-        %                   time_stamp_KBhit = keysecs;
-        %                elseif keyCode(KbName('j')) == 1
-        %                   KB_hit_key = KbName('j'); go = 1;
-        %                   time_stamp_KBhit = keysecs;
-        %                else
-        %                   sound(y220, Fs);
-        %                   Screen('DrawText', window, 'Wrong key pressed!  Press Again',...
-        %                          windowRect(3)/2, windowRect(4)/2, black);
-        %                   Screen('Flip', window);
-        %                end
-        %                KbReleaseWait;
-        %                keyIsDown = 0;
-        %            end
-        %         end
-        
         % initiate trial with space bar
         go = 0;
         while go == 0
@@ -206,15 +140,6 @@ try
         respMat{t, 7} = KB_hit_key;
         stimulusList{t, 1} = firstSound;
         stimulusList{t, 2} = secondSound;
-        
-%         while (condition == 1 && Kb_hit_key == KbName('f')) ||...
-%                 (condition == 2 && Kb_hit_key == KbName('j'))
-%             Screen('DrawText', window, 'Wrong answer! Redo trial!',...
-%                         windowRect(3)/2, windowRect(4)/2, black);
-%             Screen('Flip', window);
-%             [~, ~,~, ~, KB_hit_key] = PresentVoices();
-%         end
-%         Screen('DrawTexture', window, grayTexture);
     end 
      Screen('CloseAll'); clear mex
 catch ME
@@ -267,7 +192,7 @@ cd(homedir);
                     KB_hit_key = KbName('f');go = 1;
                     time_stamp_KBhit = keysecs1;
                     if condition == 1 % if incorrect
-                        sound(y440_long, Fs);
+                        p3 = audioplayer(wrong, FsWrong); playblocking(p3);
                         Screen('DrawText', window, 'Wrong answer! Redo trial!',...
                         windowRect(3)/2, windowRect(4)/2, black);
                         Screen('Flip', window);
@@ -276,10 +201,10 @@ cd(homedir);
                               KB_hit_key] = PresentVoices();  
                     end
                 elseif keyCode1(KbName('j')) == 1
-                    KB_hit_key = KbName('j');go = 1;
+                    KB_hit_key = KbName('j'); go = 1;
                     time_stamp_KBhit = keysecs1;
                     if condition == 2 %if incorrect
-                        sound(y440_long, Fs);
+                        p3 = audioplayer(wrong, FsWrong); playblocking(p3);
                         Screen('DrawText', window, 'Wrong answer! Redo trial!',...
                         windowRect(3)/2, windowRect(4)/2, black);
                         Screen('Flip', window);
@@ -288,7 +213,7 @@ cd(homedir);
                               KB_hit_key] = PresentVoices();  
                     end    
                 else
-                    sound(y220, Fs);
+                    sound(y220, Fs220);
                     Screen('DrawText', window, 'Wrong key pressed!  Press Again',...
                         windowRect(3)/2, windowRect(4)/2, black);
                     Screen('Flip', window);
