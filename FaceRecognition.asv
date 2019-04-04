@@ -36,6 +36,7 @@ cd(homedir);
 %% trial variables
 
 ntrials = 5; %number of trials
+nStimulus = 35;
 initpauseDur = 0.2; % initial pause after space bar
 stimDur = 1.5; % each face up for 1s
 pauseDur = 0.5; % interface gap of 0.5s
@@ -99,8 +100,8 @@ try
             windowRect(4)/2, black);
         Screen('Flip', window);
         
-        %First beep indicate start of trial.
-        time_stamp_beep_start_trial = GetSecs; sound(y440, Fs);
+        %Beep indicates new trial. Put beep sound on
+        time_stamp_sound1 = GetSecs; sound(y440, Fs);
         
         %% find the stimuli folders
         % load first stimulus
@@ -165,6 +166,7 @@ try
         respMat{t, 5} = time_stamp_start_stim2;
         respMat{t, 6} = time_stamp_KBhit;
         respMat{t, 7} = KB_hit_key;
+    
         stimulusList{t, 1} = pict1Name;
         stimulusList{t, 2} = pict2Name;
         Screen('DrawTexture', window, grayTexture);
@@ -189,20 +191,17 @@ cd(homedir);
         % interval 1
         Screen('DrawTexture', window, imageTexture1, [], []);
         Screen('Flip', window);
-        time_stamp_start_stim1 = GetSecs;
         sound(y440, Fs440);
         WaitSecs(stimDur);
         
         % pause
         Screen('DrawTexture', window, grayTexture);
         Screen('Flip', window);
-        time_stamp_start_isi = GetSecs;
         WaitSecs(pauseDur);
         
         % interval 2
         Screen('DrawTexture', window, imageTexture2, [], [], 0);
         Screen('Flip', window);
-        time_stamp_start_stim2 = GetSecs;
         sound(y440, Fs440);
         WaitSecs(stimDur);
         
@@ -212,11 +211,11 @@ cd(homedir);
         %Wait for participantname to press either f(different)/j(similar) key
         go = 0;
         while go == 0
-            [keyIsDown, keysecs1, keyCode1] = KbCheck;
+            [keyIsDown, keysecs, keyCode] = KbCheck;
             if keyIsDown
-                if keyCode1(KbName('f')) == 1
+                if keyCode(KbName('f')) == 1
                     KB_hit_key = KbName('f'); go = 1;
-                    time_stamp_KBhit = keysecs1;
+                    time_stamp_KBhit = keysecs;
                     if condition == 1 % if incorrect
                         sound(wrong, FsWrong);
                         Screen('DrawText', window, 'Wrong answer! Redo trial!',...
@@ -226,9 +225,9 @@ cd(homedir);
                               time_stamp_start_stim2, time_stamp_KBhit,...
                               KB_hit_key] = PresentVoices(); 
                     end
-                elseif keyCode1(KbName('j')) == 1
+                elseif keyCode(KbName('j')) == 1
                     KB_hit_key = KbName('j');go = 1;
-                    time_stamp_KBhit = keysecs1;
+                    time_stamp_KBhit = keysecs;
                     if condition == 2 % if incorrect
                         sound(wrong, FsWrong);
                     end

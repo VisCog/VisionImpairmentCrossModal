@@ -1,12 +1,6 @@
-function VoiceRecognition(participantname)
-%
-% Displays people voices and subjects have to say if "same" or "different"
-% voices.
-% Saves trial by trial data
-%
-% written by Gg Tran & Ione Fine 2019
-%
-% Function files used include: Psychtoolbox, PseudoRandom.m
+function VoiceRecognitionTraining(participantname)
+
+% Function file(s) use: PseudoRandom.m
 % Sound files used: 220Hz_300ms, 440Hz_50ms
 
 close all; clc; sca;
@@ -31,21 +25,22 @@ stimDur = 1.5; % each face up for 1s
 pauseDur = 0.5; % interface gap of 0.5s
 endoftrialpauseDur = 0.5;
 
-%% Randomize the conditions: male/female, similar/different);
+%Randomize the conditions: male/female, similar/different);
 randomCondition = PseudoRandom(ntrials, 2, 2);
-[y440_long,Fs] = audioread([homedir filesep 'beep_sounds\440Hz_200ms.wav']);
+[y440_long,Fs440_long] = audioread([homedir filesep 'beep_sounds\440Hz_200ms.wav']);
 [y440,Fs] = audioread([homedir filesep 'beep_sounds\440Hz_50ms.wav']);
-[y220,Fs] = audioread([homedir filesep 'beep_sounds\220Hz_300ms.wav']);
+[y220,Fs220] = audioread([homedir filesep 'beep_sounds\220Hz_300ms.wav']);
+[wrong, FsWrong] = audioread([homedir filesep 'beep_sounds\wrongAnswer.wav']);
 theSoundLocation = [homedir filesep 'voice_stimuli'];
 cd(theSoundLocation);
 addpath(genpath(theSoundLocation));
 
-%% Initialize all data structures to be saved to log file
+%Initialize all data structures to be saved to log file
 trial = cell(ntrials, 1);
 respMat = cell(ntrials, 7);
 stimulusList = cell(ntrials, 2);
 
-%% Randomize both the Male & Female stimulus folders
+%Randomize both the Male & Female stimulus folders
 genderCat = {'Female', 'Male'};
 fnameShuffled = {'FemaleFiles', 'MaleFiles'};
 for index = 1:2
@@ -59,7 +54,7 @@ for index = 1:2
 end
 cd(homedir);
 
-%% Setting up PsychToolBox
+%Setting up PsychToolBox
 screens = Screen('Screens');
 scrn = max(screens);
 Screen('Preference', 'Verbosity',0);
@@ -73,14 +68,13 @@ grey = white / 2;
 [window, windowRect] = Screen('OpenWindow', scrn, grey);
 grayTexture = Screen('MakeTexture', window, ...
     grey.*ones(windowRect(4)/2, windowRect(3)/2));
-oldTextSize = Screen('TextSize', window, 40);
+oldTextSize=Screen('TextSize', window, 40);
 Screen('DrawTexture', window, grayTexture);
 Screen('Flip', window);
 
 try
-    %% Starting the experiment trials
-    for t = 1:ntrials 
-        
+    %Starting the experiment trials
+    for t = 1:ntrials
         gender = randomCondition(t, 1);
         condition = randomCondition(t, 2); %pick Different or Similar condition
         
@@ -103,13 +97,16 @@ try
         sound1_index = randi(numel(tmp));
         firstSound = tmp{sound1_index};
         [sound1, Fsound1] = audioread(firstSound);
-        
         % load second stimulus
+        %If condition is similar, pick another sound in same subfolder
         if condition == 1
             tmp = setdiff(tmp, firstSound);
             tmp2 = randperm(length(tmp));
-            secondSound = tmp{tmp2(1)};           
-        else 
+            secondSound = tmp{tmp2(1)};
+            
+        else %If condition is different, pick sound in another folder (folder2)
+            %pick folder2 randomly, folder2 cannot be the previously used folder
+            %Then, get a sound file from folder2.
             tmp = setdiff(fnameShuffled{gender},fnameShuffled{gender}{t});
             tmp2 = randperm(length(tmp));
             stimulus2Location = [theSoundLocation filesep genderCat{gender}...
@@ -120,8 +117,8 @@ try
             secondSound = sound2Name{randi(length(sound2Name))};
         end
         [sound2,Fsound2] = audioread(secondSound);
-        
         cd(homedir);
+        
         % initiate trial with space bar
         go = 0;
         while go == 0
@@ -134,7 +131,6 @@ try
         [time_stamp_start_stim1, time_stamp_start_isi,...
             time_stamp_start_stim2, time_stamp_KBhit,...
             KB_hit_key] = PresentVoices();
-        
         trial{t} = t;
         respMat{t, 1} = time_stamp_beep_start_trial;
         respMat{t, 2} = time_stamp_KBhitSpace;
@@ -145,7 +141,6 @@ try
         respMat{t, 7} = KB_hit_key;
         stimulusList{t, 1} = firstSound;
         stimulusList{t, 2} = secondSound;
-        
     end 
      Screen('CloseAll'); clear mex
 catch ME
@@ -198,14 +193,27 @@ cd(homedir);
                     KB_hit_key = KbName('f');go = 1;
                     time_stamp_KBhit = keysecs1;
                     if condition == 1 % if incorrect
-                        sound(y440_long, Fs);
+%                         sound(y440_long, Fs);
+                        p3 = audioplayer(sound2,Fsound2); playblocking(p2);
+                        Screen('DrawText', window, 'Wrong answer! Redo trial!',...
+                        windowRect(3)/2, windowRect(4)/2, black);
+                        Screen('Flip', window);
+                        [time_stamp_start_stim1, time_stamp_start_isi,...
+                              time_stamp_start_stim2, time_stamp_KBhit,...
+                              KB_hit_key] = PresentVoices();  
                     end
                 elseif keyCode1(KbName('j')) == 1
-                    KB_hit_key = KbName('j');go = 1;
+                    KB_hit_key = KbName('j'); go = 1;
                     time_stamp_KBhit = keysecs1;
-                    if condition == 2
+                    if condition == 2 %if incorrect
                         sound(y440_long, Fs);
-                    end
+                        Screen('DrawText', window, 'Wrong answer! Redo trial!',...
+                        windowRect(3)/2, windowRect(4)/2, black);
+                        Screen('Flip', window);
+                        [time_stamp_start_stim1, time_stamp_start_isi,...
+                              time_stamp_start_stim2, time_stamp_KBhit,...
+                              KB_hit_key] = PresentVoices();  
+                    end    
                 else
                     sound(y220, Fs);
                     Screen('DrawText', window, 'Wrong key pressed!  Press Again',...
@@ -215,6 +223,7 @@ cd(homedir);
                 KbReleaseWait;
                 keyIsDown = 0;
             end
+            
         end
         WaitSecs(endoftrialpauseDur);
     end
