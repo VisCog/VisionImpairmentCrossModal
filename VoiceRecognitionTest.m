@@ -1,25 +1,25 @@
-function VoiceRecognitionTraining(participantname)
-
+function VoiceRecognitionTest(participantname)
+%
 % Displays people voices and subjects have to say if "same" or "different"
 % voices.
-% If participant answers incorrectly, the trial is repeated.
 % Saves trial by trial data
 %
 % written by Gg Tran & Ione Fine 2019
-% Function file(s) use: PseudoRandom.m
-% Sound files used: 220Hz_300ms, 440Hz_50ms, wrongAnswer
+%
+% Function files used include: Psychtoolbox, PseudoRandom.m
+% Sound files used: 220Hz_300ms, 440Hz_50ms
 
 close all; clc; sca;
 
 if ~exist('participantname')
     participantname = 'TRAINING';
 end
-
 %% directories & subject's identifier
 
 fileName = strcat(datestr(now, 'yyyy-mm-dd-HH-MM-SS'), '.mat');
 homedir = pwd;
 addpath(genpath('C:\ProgramFiles\PsychToolbox'))
+% Participant = 'CODE IDENTIFIER'; % PUT IN PARTICIPANT'S CODE IDENTIFIER
 mkdir(participantname) %make a new directory in their name, existed foldername will throw a warning
 cd(homedir);
 
@@ -31,22 +31,21 @@ stimDur = 1.5; % each face up for 1s
 pauseDur = 0.5; % interface gap of 0.5s
 endoftrialpauseDur = 0.5;
 
-%Randomize the conditions: male/female, similar/different);
+%% Randomize the conditions: male/female, similar/different);
 randomCondition = PseudoRandom(ntrials, 2, 2);
-[y440_long,Fs440_long] = audioread([homedir filesep 'beep_sounds\440Hz_200ms.wav']);
+[y440_long,Fs] = audioread([homedir filesep 'beep_sounds\440Hz_200ms.wav']);
 [y440,Fs] = audioread([homedir filesep 'beep_sounds\440Hz_50ms.wav']);
-[y220,Fs220] = audioread([homedir filesep 'beep_sounds\220Hz_300ms.wav']);
-[wrong, FsWrong] = audioread([homedir filesep 'beep_sounds\wrongAnswer.wav']);
-theSoundLocation = [homedir filesep 'voice_stim_training'];
+[y220,Fs] = audioread([homedir filesep 'beep_sounds\220Hz_300ms.wav']);
+theSoundLocation = [homedir filesep 'voice_stim_test'];
 cd(theSoundLocation);
 addpath(genpath(theSoundLocation));
 
-%Initialize all data structures to be saved to log file
+%% Initialize all data structures to be saved to log file
 trial = cell(ntrials, 1);
 respMat = cell(ntrials, 7);
 stimulusList = cell(ntrials, 2);
 
-%Randomize both the Male & Female stimulus folders
+%% Randomize both the Male & Female stimulus folders
 genderCat = {'Female', 'Male'};
 fnameShuffled = {'FemaleFiles', 'MaleFiles'};
 for index = 1:2
@@ -60,7 +59,7 @@ for index = 1:2
 end
 cd(homedir);
 
-%Setting up PsychToolBox
+%% Setting up PsychToolBox
 screens = Screen('Screens');
 scrn = max(screens);
 Screen('Preference', 'Verbosity',0);
@@ -74,24 +73,24 @@ grey = white / 2;
 [window, windowRect] = Screen('OpenWindow', scrn, grey);
 grayTexture = Screen('MakeTexture', window, ...
     grey.*ones(windowRect(4)/2, windowRect(3)/2));
-oldTextSize=Screen('TextSize', window, 40);
+oldTextSize = Screen('TextSize', window, 40);
 Screen('DrawTexture', window, grayTexture);
 Screen('Flip', window);
-exit = false;
 
 try
-    %Starting the experiment trials
-    for t = 1:ntrials
+    %% Starting the experiment trials
+    for t = 1:ntrials 
+        
         gender = randomCondition(t, 1);
         condition = randomCondition(t, 2); %pick Different or Similar condition
         
-        Screen('DrawText', window,...
-            'New Trial. Spacebar: Start trial. Press esc to quit.', ...
-            windowRect(3)/2, windowRect(4)/2, black);
+        Screen('DrawText', window, 'New Trial', windowRect(3)/2, ...
+            windowRect(4)/2, black);
         Screen('Flip', window);
         
         %First beep indicate start of trial.
-        time_stamp_beep_start_trial = GetSecs; sound(y440, Fs);
+        time_stamp_beep_start_trial = GetSecs;
+        sound(y440, Fs);
         
         %% find the stimuli folders
         % load first stimulus
@@ -104,13 +103,12 @@ try
         sound1_index = randi(numel(tmp));
         firstSound = tmp{sound1_index};
         [sound1, Fsound1] = audioread(firstSound);
+        
         % load second stimulus
-        %If condition is similar, pick another sound in same subfolder
         if condition == 1
             tmp = setdiff(tmp, firstSound);
             tmp2 = randperm(length(tmp));
-            secondSound = tmp{tmp2(1)};
-            
+            secondSound = tmp{tmp2(1)};           
         else 
             tmp = setdiff(fnameShuffled{gender},fnameShuffled{gender}{t});
             tmp2 = randperm(length(tmp));
@@ -122,68 +120,42 @@ try
             secondSound = sound2Name{randi(length(sound2Name))};
         end
         [sound2,Fsound2] = audioread(secondSound);
-        cd(homedir);
         
+        cd(homedir);
         % initiate trial with space bar
-        go = 0; escAll=0;
+        go = 0;
         while go == 0
             [~, keysecs, keyCode] = KbCheck;
             if keyCode(KbName('space')) == 1
-                go = 1;      
+                go = 1;
                 time_stamp_KBhitSpace = keysecs;
-                 [time_stamp_start_stim1, time_stamp_start_isi,...
-                time_stamp_start_stim2, time_stamp_KBhit,...
-                KB_hit_key] = PresentVoices();
-            trial{t} = t;
-            respMat{t, 1} = time_stamp_beep_start_trial;
-            respMat{t, 2} = time_stamp_KBhitSpace;
-            respMat{t, 3} = time_stamp_start_stim1;
-            respMat{t, 4} = time_stamp_start_isi;
-            respMat{t, 5} = time_stamp_start_stim2;
-            respMat{t, 6} = time_stamp_KBhit;
-            respMat{t, 7} = KB_hit_key;
-            stimulusList{t, 1} = firstSound;
-            stimulusList{t, 2} = secondSound;
-            elseif keyCode(KbName('esc'))
-%                 escAll = 1;  
-                  saveFiles();
-                  ShowCursor; sca; 
-                  return;
             end
         end
-%          if ~escAll
-%             [time_stamp_start_stim1, time_stamp_start_isi,...
-%                 time_stamp_start_stim2, time_stamp_KBhit,...
-%                 KB_hit_key] = PresentVoices();
-%             trial{t} = t;
-%             respMat{t, 1} = time_stamp_beep_start_trial;
-%             respMat{t, 2} = time_stamp_KBhitSpace;
-%             respMat{t, 3} = time_stamp_start_stim1;
-%             respMat{t, 4} = time_stamp_start_isi;
-%             respMat{t, 5} = time_stamp_start_stim2;
-%             respMat{t, 6} = time_stamp_KBhit;
-%             respMat{t, 7} = KB_hit_key;
-%             stimulusList{t, 1} = firstSound;
-%             stimulusList{t, 2} = secondSound;
-%         else 
-%                saveFiles();
-%                ShowCursor; sca; 
-%                return;
-%          end
+        [time_stamp_start_stim1, time_stamp_start_isi,...
+            time_stamp_start_stim2, time_stamp_KBhit,...
+            KB_hit_key] = PresentVoices();
         
-    end
+        trial{t} = t;
+        respMat{t, 1} = time_stamp_beep_start_trial;
+        respMat{t, 2} = time_stamp_KBhitSpace;
+        respMat{t, 3} = time_stamp_start_stim1;
+        respMat{t, 4} = time_stamp_start_isi;
+        respMat{t, 5} = time_stamp_start_stim2;
+        respMat{t, 6} = time_stamp_KBhit;
+        respMat{t, 7} = KB_hit_key;
+        stimulusList{t, 1} = firstSound;
+        stimulusList{t, 2} = secondSound;
+        
+    end 
      Screen('CloseAll'); clear mex
 catch ME
     cd(homedir)
     Screen('CloseAll'); clear mex
 end
-saveFiles();
-    function saveFiles()
-    response = horzcat(trial, stimulusList, respMat);
-    cd(participantname)
-    save(fileName, 'response')
-    cd(homedir);
-    end
+response = horzcat(trial, stimulusList, respMat);
+cd(participantname)
+save(fileName, 'response')
+cd(homedir);
 
     function  [time_stamp_start_stim1, time_stamp_start_isi,...
             time_stamp_start_stim2, time_stamp_KBhit,...
@@ -225,29 +197,17 @@ saveFiles();
                 if keyCode1(KbName('f')) == 1
                     KB_hit_key = KbName('f');go = 1;
                     time_stamp_KBhit = keysecs1;
-                    if condition == 1 % if incorrect answer given
-                        p3 = audioplayer(wrong, FsWrong); playblocking(p3);
-                        Screen('DrawText', window, 'Wrong answer! Redo trial!',...
-                        windowRect(3)/2, windowRect(4)/2, black);
-                        Screen('Flip', window);
-                        [time_stamp_start_stim1, time_stamp_start_isi,...
-                              time_stamp_start_stim2, time_stamp_KBhit,...
-                              KB_hit_key] = PresentVoices();  
+                    if condition == 1 % if incorrect
+                        sound(y440_long, Fs);
                     end
                 elseif keyCode1(KbName('j')) == 1
-                    KB_hit_key = KbName('j'); go = 1;
+                    KB_hit_key = KbName('j');go = 1;
                     time_stamp_KBhit = keysecs1;
-                    if condition == 2 % if incorrect answer given
-                        p3 = audioplayer(wrong, FsWrong); playblocking(p3);
-                        Screen('DrawText', window, 'Wrong answer! Redo trial!',...
-                        windowRect(3)/2, windowRect(4)/2, black);
-                        Screen('Flip', window);
-                        [time_stamp_start_stim1, time_stamp_start_isi,...
-                              time_stamp_start_stim2, time_stamp_KBhit,...
-                              KB_hit_key] = PresentVoices();  
-                    end    
+                    if condition == 2
+                        sound(y440_long, Fs);
+                    end
                 else
-                    sound(y220, Fs220);
+                    sound(y220, Fs);
                     Screen('DrawText', window, 'Wrong key pressed!  Press Again',...
                         windowRect(3)/2, windowRect(4)/2, black);
                     Screen('Flip', window);
@@ -255,7 +215,6 @@ saveFiles();
                 KbReleaseWait;
                 keyIsDown = 0;
             end
-            
         end
         WaitSecs(endoftrialpauseDur);
     end
