@@ -25,7 +25,7 @@ cd(homedir);
 
 %% trial variables
 
-ntrials = 2; %number of trials
+ntrials = 250; %number of trials
 initpauseDur = 0.2; % initial pause after space bar
 stimDur = 1.5; % each face up for 1s
 pauseDur = 0.5; % interface gap of 0.5s
