@@ -145,31 +145,11 @@ try
             stimulusList{t, 1} = firstSound;
             stimulusList{t, 2} = secondSound;
             elseif keyCode(KbName('esc'))
-%                 escAll = 1;  
                   saveFiles();
                   ShowCursor; sca; 
                   return;
             end
         end
-%          if ~escAll
-%             [time_stamp_start_stim1, time_stamp_start_isi,...
-%                 time_stamp_start_stim2, time_stamp_KBhit,...
-%                 KB_hit_key] = PresentVoices();
-%             trial{t} = t;
-%             respMat{t, 1} = time_stamp_beep_start_trial;
-%             respMat{t, 2} = time_stamp_KBhitSpace;
-%             respMat{t, 3} = time_stamp_start_stim1;
-%             respMat{t, 4} = time_stamp_start_isi;
-%             respMat{t, 5} = time_stamp_start_stim2;
-%             respMat{t, 6} = time_stamp_KBhit;
-%             respMat{t, 7} = KB_hit_key;
-%             stimulusList{t, 1} = firstSound;
-%             stimulusList{t, 2} = secondSound;
-%         else 
-%                saveFiles();
-%                ShowCursor; sca; 
-%                return;
-%          end
         
     end
      Screen('CloseAll'); clear mex
