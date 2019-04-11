@@ -75,9 +75,6 @@ grey = white / 2;
 grayTexture = Screen('MakeTexture', window, ...
     grey.*ones(windowRect(4), windowRect(3)));
 oldTextSize=Screen('TextSize', window, 40);
-% tmp=zeros(windowRect(4)/2, windowRect(3)/2, 3);
-% red_tmp=tmp; red_tmp(:, :, 1)=1;
-% redTexture = Screen('MakeTexture', window, red_tmp);
 Screen('DrawTexture', window, grayTexture, [],[],[],[],[],[255, 0, 0]);
 Screen('Flip', window);
 
