@@ -43,7 +43,7 @@ addpath(genpath(theSoundLocation));
 
 %Initialize all data structures to be saved to log file
 trial = cell(ntrials, 1);
-respMat = cell(ntrials, 7);
+respMat = cell(ntrials, 8);
 stimulusList = cell(ntrials, 2);
 
 %Randomize both the Male & Female stimulus folders
@@ -73,22 +73,28 @@ grey = white / 2;
 
 [window, windowRect] = Screen('OpenWindow', scrn, grey);
 grayTexture = Screen('MakeTexture', window, ...
-    grey.*ones(windowRect(4)/2, windowRect(3)/2));
+    grey.*ones(windowRect(4), windowRect(3)));
 oldTextSize=Screen('TextSize', window, 40);
-Screen('DrawTexture', window, grayTexture);
+% tmp=zeros(windowRect(4)/2, windowRect(3)/2, 3);
+% red_tmp=tmp; red_tmp(:, :, 1)=1;
+% redTexture = Screen('MakeTexture', window, red_tmp);
+Screen('DrawTexture', window, grayTexture, [],[],[],[],[],[255, 0, 0]);
 Screen('Flip', window);
-exit = false;
 
 try
     %Starting the experiment trials
     for t = 1:ntrials
+        respMat{t, 8} = 1;  %Set default answer to first try as correct
         gender = randomCondition(t, 1);
         condition = randomCondition(t, 2); %pick Different or Similar condition
         
+        Screen('FillRect', window, [66, 229, 244], windowRect);
+        Screen('Flip', window);
         Screen('DrawText', window,...
             'New Trial. Spacebar: Start trial. Press esc to quit.', ...
-            windowRect(3)/2, windowRect(4)/2, black);
+            windowRect(3)/2 - 300, windowRect(4)/2, black);
         Screen('Flip', window);
+        
         
         %First beep indicate start of trial.
         time_stamp_beep_start_trial = GetSecs; sound(y440, Fs);
@@ -125,14 +131,14 @@ try
         cd(homedir);
         
         % initiate trial with space bar
-        go = 0; escAll=0;
+        go = 0;
         while go == 0
             [~, keysecs, keyCode] = KbCheck;
             if keyCode(KbName('space')) == 1
                 go = 1;      
                 time_stamp_KBhitSpace = keysecs;
                  [time_stamp_start_stim1, time_stamp_start_isi,...
-                time_stamp_start_stim2, time_stamp_KBhit,...
+                time_stamp_start_stim2, time_stamp_KBhit, ...
                 KB_hit_key] = PresentVoices();
             trial{t} = t;
             respMat{t, 1} = time_stamp_beep_start_trial;
@@ -140,7 +146,7 @@ try
             respMat{t, 3} = time_stamp_start_stim1;
             respMat{t, 4} = time_stamp_start_isi;
             respMat{t, 5} = time_stamp_start_stim2;
-            respMat{t, 6} = time_stamp_KBhit;
+            respMat{t, 6} = time_stamp_KBhit;     
             respMat{t, 7} = KB_hit_key;
             stimulusList{t, 1} = firstSound;
             stimulusList{t, 2} = secondSound;
@@ -170,7 +176,9 @@ saveFiles();
             KB_hit_key] = PresentVoices()
         WaitSecs(initpauseDur);
         % interval 1
-        Screen('DrawText', window, 'First sound', windowRect(3)/2,...
+        Screen('FillRect', window, [192, 255, 168], windowRect);
+        Screen('Flip', window);
+        Screen('DrawText', window, 'First sound', windowRect(3)/2 - 100,...
             windowRect(4)/2, black);
         Screen('Flip', window);
         sound(y440, Fs);
@@ -185,7 +193,9 @@ saveFiles();
         WaitSecs(pauseDur);
         
         % interval 2
-        Screen('DrawText', window, 'Second sound', windowRect(3)/2,...
+        Screen('FillRect', window, [1, 153, 79], windowRect);
+        Screen('Flip', window);
+        Screen('DrawText', window, 'Second sound', windowRect(3)/2 - 100,...
             windowRect(4)/2, [232, 4, 156]);
         Screen('Flip', window);
         sound(y440, Fs);
@@ -198,6 +208,8 @@ saveFiles();
         Screen('Flip', window);
         
         %Wait for participantname to press either f(different)/j(similar) key
+        Screen('FillRect', window, [7, 60, 249], windowRect);
+        Screen('Flip', window);
         go = 0;
         while go == 0
             [keyIsDown, keysecs1, keyCode1] = KbCheck;
@@ -206,6 +218,7 @@ saveFiles();
                     KB_hit_key = KbName('f');go = 1;
                     time_stamp_KBhit = keysecs1;
                     if condition == 1 % if incorrect answer given
+                        respMat{t, 8} = 0; %if they press wrong or right on 1st try
                         p3 = audioplayer(wrong, FsWrong); playblocking(p3);
                         Screen('DrawText', window, 'Wrong answer! Redo trial!',...
                         windowRect(3)/2, windowRect(4)/2, black);
@@ -218,9 +231,10 @@ saveFiles();
                     KB_hit_key = KbName('j'); go = 1;
                     time_stamp_KBhit = keysecs1;
                     if condition == 2 % if incorrect answer given
+                        respMat{t, 8} = 0;
                         p3 = audioplayer(wrong, FsWrong); playblocking(p3);
                         Screen('DrawText', window, 'Wrong answer! Redo trial!',...
-                        windowRect(3)/2, windowRect(4)/2, black);
+                        windowRect(3)/2 - 300, windowRect(4)/2, black);
                         Screen('Flip', window);
                         [time_stamp_start_stim1, time_stamp_start_isi,...
                               time_stamp_start_stim2, time_stamp_KBhit,...
@@ -229,7 +243,7 @@ saveFiles();
                 else
                     sound(y220, Fs220);
                     Screen('DrawText', window, 'Wrong key pressed!  Press Again',...
-                        windowRect(3)/2, windowRect(4)/2, black);
+                        windowRect(3)/2 - 300, windowRect(4)/2, black);
                     Screen('Flip', window);
                 end
                 KbReleaseWait;
