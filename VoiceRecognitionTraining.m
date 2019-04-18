@@ -11,9 +11,9 @@ function VoiceRecognitionTraining(participantname)
 
 close all; clc; sca;
 
-if ~exist('participantname')
-    participantname = 'TRAINING';
-end
+% if ~exist('participantname')
+%     participantname = 'TRAINING';
+% end
 
 %% directories & subject's identifier
 

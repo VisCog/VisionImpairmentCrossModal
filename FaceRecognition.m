@@ -9,18 +9,15 @@ function FaceRecognition(participantname)
 % Sound files used: 220Hz_300ms, 440Hz_50ms
 %
 % 3/11/2019 Ione made the stimulus presentation a function
-% TO DO
-% error feedback if running as test
-% repeated trial if running as test
 
 
 clc; % clear command window
 close all;
 sca; % screen close all
 
-if ~exist('participantname')
-    participantname = 'TRAINING';
-end
+% if ~exist('participantname')
+%     participantname = 'TRAINING';
+% end
 
 %% directories & subject's identifier
 
@@ -30,7 +27,7 @@ theImageLocation = [homedir filesep 'face_images'];
 addpath(genpath(theImageLocation));
 fileName = datestr(now, 'yyyy-mm-dd-HH-MM-SS');
 addpath(genpath('C:\ProgramFiles\PsychToolbox'))
-mkdir(participantname) %make a new directory in their name, existed foldername will throw a warning
+mkdir participantname %make a new directory in their name, existed foldername will throw a warning
 cd(homedir);
 
 %% trial variables

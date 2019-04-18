@@ -11,15 +11,11 @@ function VoiceRecognitionTest(participantname)
 
 close all; clc; sca;
 
-if ~exist('participantname')
-    participantname = 'TRAINING';
-end
 %% directories & subject's identifier
 
 fileName = strcat(datestr(now, 'yyyy-mm-dd-HH-MM-SS'), '.mat');
 homedir = pwd;
 addpath(genpath('C:\ProgramFiles\PsychToolbox'))
-% Participant = 'CODE IDENTIFIER'; % PUT IN PARTICIPANT'S CODE IDENTIFIER
 mkdir(participantname) %make a new directory in their name, existed foldername will throw a warning
 cd(homedir);
 
