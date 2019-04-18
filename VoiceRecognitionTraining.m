@@ -8,12 +8,12 @@ function VoiceRecognitionTraining(participantname)
 % written by Gg Tran & Ione Fine 2019
 % Function file(s) use: PseudoRandom.m
 % Sound files used: 220Hz_300ms, 440Hz_50ms, wrongAnswer
+%
+% Running the program: 
+% Put in the function VoiceRecognitionTraining('name') into the command window
 
 close all; clc; sca;
 
-% if ~exist('participantname')
-%     participantname = 'TRAINING';
-% end
 
 %% directories & subject's identifier
 
@@ -161,11 +161,12 @@ catch ME
     Screen('CloseAll'); clear mex
 end
 saveFiles();
+
     function saveFiles()
-    response = horzcat(trial, stimulusList, respMat);
-    cd(participantname)
-    save(fileName, 'response')
-    cd(homedir);
+        response = horzcat(trial, stimulusList, respMat);
+        cd(participantname)
+        save(fileName, 'response')
+        cd(homedir);
     end
 
     function  [time_stamp_start_stim1, time_stamp_start_isi,...

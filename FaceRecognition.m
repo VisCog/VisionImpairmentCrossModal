@@ -9,6 +9,9 @@ function FaceRecognition(participantname)
 % Sound files used: 220Hz_300ms, 440Hz_50ms
 %
 % 3/11/2019 Ione made the stimulus presentation a function
+%
+% Running the program: 
+% Put in the function FaceRecognition('name') into the command window
 
 
 clc; % clear command window
@@ -27,7 +30,7 @@ theImageLocation = [homedir filesep 'face_images'];
 addpath(genpath(theImageLocation));
 fileName = datestr(now, 'yyyy-mm-dd-HH-MM-SS');
 addpath(genpath('C:\ProgramFiles\PsychToolbox'))
-mkdir participantname %make a new directory in their name, existed foldername will throw a warning
+mkdir(participantname) %make a new directory in their name, existed foldername will throw a warning
 cd(homedir);
 
 %% trial variables
@@ -46,7 +49,6 @@ randomCondition = PseudoRandom(ntrials, 2, 2, 6);
 [y440_long,Fs440_long] = audioread([homedir filesep 'beep_sounds\440Hz_200ms.wav']);
 [y440,Fs440] = audioread([homedir filesep 'beep_sounds\440Hz_50ms.wav']); % new trial sound
 [y220,Fs220] = audioread([homedir filesep 'beep_sounds\220Hz_300ms.wav']); % wrong keypress
-% [wrong, FsWrong] = audioread([homedir filesep 'beep_sounds\wrongAnswer.wav']);
 
 %% Initialize all data structures to be saved to log file
 
@@ -91,7 +93,7 @@ try
         condition = randomCondition(t, 2); %pick Different or Similar condition
          pict1type = pictCategories{randomCondition(t, 3)};
         
-        Screen('DrawText', window, 'New Trial', windowRect(3)/2, ...
+        Screen('DrawText', window, 'New Trial. Press esc to quit', windowRect(3)/2, ...
             windowRect(4)/2, black);
         Screen('Flip', window);
         
@@ -111,7 +113,7 @@ try
         % load second stimulus
         if condition ==1 % same condition
             stimulus2Location = stimulus1Location;
-        else %tmp returns a randomly chosen folder, different from folder1
+        else 
             tmp=setdiff(fnameShuffled{gender},fnameShuffled{gender}{t});
             tmp2=randperm(length(tmp));
             stimulus2Location = [theImageLocation filesep genderCat{gender}...
@@ -147,36 +149,41 @@ try
             if keyCode(KbName('space')) == 1
                 go = 1;
                 time_stamp_KBhitSpace = keysecs;
+                [time_stamp_start_stim1, time_stamp_start_isi,...
+                     time_stamp_start_stim2, time_stamp_KBhit,...
+                         KB_hit_key] = PresentFaces();
+                
+                trial{t} = t;
+                respMat{t, 1} = time_stamp_beep_start_trial;
+                respMat{t, 2} = time_stamp_KBhitSpace;
+                respMat{t, 3} = time_stamp_start_stim1;
+                respMat{t, 4} = time_stamp_start_isi;
+                respMat{t, 5} = time_stamp_start_stim2;
+                respMat{t, 6} = time_stamp_KBhit;
+                respMat{t, 7} = KB_hit_key;
+                stimulusList{t, 1} = pict1Name;
+                stimulusList{t, 2} = pict2Name;
+            elseif keyCode(KbName('esc'))
+                saveFiles();
+                ShowCursor; sca; 
+                return;
             end
         end
-        [time_stamp_start_stim1, time_stamp_start_isi,...
-            time_stamp_start_stim2, time_stamp_KBhit,...
-            KB_hit_key] = PresentFaces();
-                
-        trial{t} = t;
-        respMat{t, 1} = time_stamp_beep_start_trial;
-        respMat{t, 2} = time_stamp_KBhitSpace;
-        respMat{t, 3} = time_stamp_start_stim1;
-        respMat{t, 4} = time_stamp_start_isi;
-        respMat{t, 5} = time_stamp_start_stim2;
-        respMat{t, 6} = time_stamp_KBhit;
-        respMat{t, 7} = KB_hit_key;
-        stimulusList{t, 1} = pict1Name;
-        stimulusList{t, 2} = pict2Name;
-%         Screen('DrawTexture', window, grayTexture);
+        
     end
      Screen('CloseAll'); clear mex
 catch ME
     cd(homedir);
     Screen('CloseAll'); clear mex
 end
+saveFiles()
 
-% WaitSecs(1);
-% sca;
-cd(participantname) %save data in the subject's folder
-response = horzcat(trial, stimulusList, respMat);
-save(strcat(fileName, '.mat'), 'response')
-cd(homedir);
+    function saveFiles()
+    cd(participantname) %save data in the subject's folder
+    response = horzcat(trial, stimulusList, respMat);
+    save(strcat(fileName, '.mat'), 'response')
+    cd(homedir);
+    end
 
     function [time_stamp_start_stim1, time_stamp_start_isi,...
             time_stamp_start_stim2, time_stamp_KBhit,...
@@ -214,30 +221,12 @@ cd(homedir);
                 if keyCode1(KbName('f')) == 1
                     KB_hit_key = KbName('f'); go = 1;
                     time_stamp_KBhit = keysecs1;
-%                     if condition == 1 % if incorrect
-%                         p3 = audioplayer(wrong, FsWrong); playblocking(p3);
-%                         Screen('DrawText', window, 'Wrong answer! Redo trial!',...
-%                         windowRect(3)/2, windowRect(4)/2, black);
-%                         Screen('Flip', window);
-%                         [time_stamp_start_stim1, time_stamp_start_isi,...
-%                               time_stamp_start_stim2, time_stamp_KBhit,...
-%                               KB_hit_key] = PresentFaces(); 
-%                     end
                 elseif keyCode1(KbName('j')) == 1
                     KB_hit_key = KbName('j');go = 1;
                     time_stamp_KBhit = keysecs1;
-%                     if condition == 2 % if incorrect
-%                         p3 = audioplayer(wrong, FsWrong); playblocking(p3);
-%                         Screen('DrawText', window, 'Wrong answer! Redo trial!',...
-%                         windowRect(3)/2, windowRect(4)/2, black);
-%                         Screen('Flip', window);
-%                         [time_stamp_start_stim1, time_stamp_start_isi,...
-%                               time_stamp_start_stim2, time_stamp_KBhit,...
-%                               KB_hit_key] = PresentFaces(); 
-%                     end
                 else
                     sound(y220, Fs220);
-                    Screen('DrawText', window, 'Wrong key pressed!  Press Again',...
+                    Screen('DrawText', window, 'Wrong key pressed! Press Again',...
                         windowRect(3)/2, windowRect(4)/2, black);
                     Screen('Flip', window);
                 end

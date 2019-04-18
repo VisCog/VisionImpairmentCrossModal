@@ -8,8 +8,15 @@ function VoiceRecognitionTest(participantname)
 %
 % Function files used include: Psychtoolbox, PseudoRandom.m
 % Sound files used: 220Hz_300ms, 440Hz_50ms
+%
+% Running the program: 
+% Put in the function VoiceRecognitionTest('name') into the command window
 
 close all; clc; sca;
+
+if ~exist('participantname') ||  isempty(participantname)
+    participantname = 'TRAINING';
+end
 
 %% directories & subject's identifier
 
@@ -68,7 +75,7 @@ grey = white / 2;
 
 [window, windowRect] = Screen('OpenWindow', scrn, grey);
 grayTexture = Screen('MakeTexture', window, ...
-    grey.*ones(windowRect(4)/2, windowRect(3)/2));
+    grey.*ones(windowRect(4), windowRect(3)));
 oldTextSize = Screen('TextSize', window, 40);
 Screen('DrawTexture', window, grayTexture);
 Screen('Flip', window);
@@ -80,7 +87,9 @@ try
         gender = randomCondition(t, 1);
         condition = randomCondition(t, 2); %pick Different or Similar condition
         
-        Screen('DrawText', window, 'New Trial', windowRect(3)/2, ...
+        Screen('FillRect', window, [66, 229, 244], windowRect);
+        Screen('Flip', window);
+        Screen('DrawText', window, 'New Trial. Press esc to quit.', windowRect(3)/2, ...
             windowRect(4)/2, black);
         Screen('Flip', window);
         
@@ -125,39 +134,47 @@ try
             if keyCode(KbName('space')) == 1
                 go = 1;
                 time_stamp_KBhitSpace = keysecs;
+                [time_stamp_start_stim1, time_stamp_start_isi,...
+                    time_stamp_start_stim2, time_stamp_KBhit,...
+                        KB_hit_key] = PresentVoices();       
+                trial{t} = t;
+                respMat{t, 1} = time_stamp_beep_start_trial;
+                respMat{t, 2} = time_stamp_KBhitSpace;
+                respMat{t, 3} = time_stamp_start_stim1;
+                respMat{t, 4} = time_stamp_start_isi;
+                respMat{t, 5} = time_stamp_start_stim2;
+                respMat{t, 6} = time_stamp_KBhit;
+                respMat{t, 7} = KB_hit_key;
+                stimulusList{t, 1} = firstSound;
+                stimulusList{t, 2} = secondSound;
+            elseif keyCode(KbName('esc'))
+                  saveFiles();
+                  ShowCursor; sca; 
+                  return;    
             end
-        end
-        [time_stamp_start_stim1, time_stamp_start_isi,...
-            time_stamp_start_stim2, time_stamp_KBhit,...
-            KB_hit_key] = PresentVoices();
-        
-        trial{t} = t;
-        respMat{t, 1} = time_stamp_beep_start_trial;
-        respMat{t, 2} = time_stamp_KBhitSpace;
-        respMat{t, 3} = time_stamp_start_stim1;
-        respMat{t, 4} = time_stamp_start_isi;
-        respMat{t, 5} = time_stamp_start_stim2;
-        respMat{t, 6} = time_stamp_KBhit;
-        respMat{t, 7} = KB_hit_key;
-        stimulusList{t, 1} = firstSound;
-        stimulusList{t, 2} = secondSound;
-        
+        end              
     end 
      Screen('CloseAll'); clear mex
 catch ME
     cd(homedir)
     Screen('CloseAll'); clear mex
 end
-response = horzcat(trial, stimulusList, respMat);
-cd(participantname)
-save(fileName, 'response')
-cd(homedir);
+saveFiles();
+
+    function saveFiles()
+        response = horzcat(trial, stimulusList, respMat);
+        cd(participantname)
+        save(fileName, 'response')
+        cd(homedir);
+    end
 
     function  [time_stamp_start_stim1, time_stamp_start_isi,...
             time_stamp_start_stim2, time_stamp_KBhit,...
             KB_hit_key] = PresentVoices()
         WaitSecs(initpauseDur);
         % interval 1
+        Screen('FillRect', window, [192, 255, 168], windowRect);
+        Screen('Flip', window);
         Screen('DrawText', window, 'First sound', windowRect(3)/2,...
             windowRect(4)/2, black);
         Screen('Flip', window);
@@ -173,6 +190,8 @@ cd(homedir);
         WaitSecs(pauseDur);
         
         % interval 2
+        Screen('FillRect', window, [1, 153, 79], windowRect);
+        Screen('Flip', window);
         Screen('DrawText', window, 'Second sound', windowRect(3)/2,...
             windowRect(4)/2, [232, 4, 156]);
         Screen('Flip', window);
@@ -186,6 +205,8 @@ cd(homedir);
         Screen('Flip', window);
         
         %Wait for participantname to press either f(different)/j(similar) key
+        Screen('FillRect', window, [7, 60, 249], windowRect);
+        Screen('Flip', window);
         go = 0;
         while go == 0
             [keyIsDown, keysecs1, keyCode1] = KbCheck;
@@ -204,7 +225,7 @@ cd(homedir);
                     end
                 else
                     sound(y220, Fs);
-                    Screen('DrawText', window, 'Wrong key pressed!  Press Again',...
+                    Screen('DrawText', window, 'Wrong key pressed! Press Again',...
                         windowRect(3)/2, windowRect(4)/2, black);
                     Screen('Flip', window);
                 end
