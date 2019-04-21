@@ -18,9 +18,9 @@ clc; % clear command window
 close all;
 sca; % screen close all
 
-% if ~exist('participantname')
-%     participantname = 'TRAINING';
-% end
+if ~exist('participantname', 'var') ||  isempty(participantname)
+    participantname = 'TRAINING';
+end
 
 %% directories & subject's identifier
 

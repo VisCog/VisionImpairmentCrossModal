@@ -9,11 +9,12 @@ function VoiceRecognitionTraining(participantname)
 % Function file(s) use: PseudoRandom.m
 % Sound files used: 220Hz_300ms, 440Hz_50ms, wrongAnswer
 %
-% Running the program: 
-% Put in the function VoiceRecognitionTraining('name') into the command window
 
 close all; clc; sca;
 
+if ~exist('participantname', 'var') ||  isempty(participantname)
+    participantname = 'TRAIN fING';
+end
 
 %% directories & subject's identifier
 

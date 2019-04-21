@@ -4,17 +4,15 @@ function VoiceRecognitionTest(participantname)
 % voices.
 % Saves trial by trial data
 %
-% written by Gg Tran & Ione Fine 2019
+% written by Gg Tran & Ione Fine & Kelly Chang 2019
 %
 % Function files used include: Psychtoolbox, PseudoRandom.m
 % Sound files used: 220Hz_300ms, 440Hz_50ms
 %
-% Running the program: 
-% Put in the function VoiceRecognitionTest('name') into the command window
 
 close all; clc; sca;
 
-if ~exist('participantname') ||  isempty(participantname)
+if ~exist('participantname', 'var') ||  isempty(participantname)
     participantname = 'TRAINING';
 end
 
