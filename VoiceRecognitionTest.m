@@ -26,7 +26,7 @@ cd(homedir);
 
 %% trial variables
 
-ntrials = 2; %number of trials
+ntrials = 30; %number of trials
 initpauseDur = 0.2; % initial pause after space bar
 stimDur = 1.5; % each face up for 1s
 pauseDur = 0.5; % interface gap of 0.5s
@@ -80,8 +80,7 @@ Screen('Flip', window);
 
 try
     %% Starting the experiment trials
-    for t = 1:ntrials 
-        
+    for t = 1:ntrials        
         gender = randomCondition(t, 1);
         condition = randomCondition(t, 2); %pick Different or Similar condition
         
@@ -97,32 +96,34 @@ try
         
         %% find the stimuli folders
         % load first stimulus
-        stimulus1Location = [theSoundLocation filesep genderCat{gender} filesep ...
-            fnameShuffled{gender}{t}];
-        cd(stimulus1Location)
-        tmp = dir('*.wav'); tmp = {tmp.name};
+        firstSoundVoice = fnameShuffled{gender}{randi(length(fnameShuffled{gender}))};
+        stimulus1Location = fullfile(theSoundLocation, genderCat{gender}, ...
+            firstSoundVoice);
+        tmp = dir(fullfile(stimulus1Location, '*.wav'));
+        tmp = {tmp.name};
         
         %Pick the file name of the first sound
         sound1_index = randi(numel(tmp));
         firstSound = tmp{sound1_index};
-        [sound1, Fsound1] = audioread(firstSound);
+        firstSoundPath = fullfile(stimulus1Location, firstSound);
+        [sound1, Fsound1] = audioread(firstSoundPath);
         
         % load second stimulus
         if condition == 1
-            tmp = setdiff(tmp, firstSound);
-            tmp2 = randperm(length(tmp));
-            secondSound = tmp{tmp2(1)};           
+            sound2_index = Sample(setdiff(1:numel(tmp), sound1_index));
+            secondSound = tmp{sound2_index};
+            secondSoundPath = fullfile(stimulus1Location, secondSound);
         else 
-            tmp = setdiff(fnameShuffled{gender},fnameShuffled{gender}{t});
-            tmp2 = randperm(length(tmp));
-            stimulus2Location = [theSoundLocation filesep genderCat{gender}...
-                filesep tmp{tmp2(1)}];
-            cd(stimulus2Location);
-            sound2Name = dir('*.wav');
-            sound2Name = {sound2Name.name};
-            secondSound = sound2Name{randi(length(sound2Name))};
+            tmp = setdiff(fnameShuffled{gender}, firstSoundVoice);
+            secondSoundVoice = tmp{randi(length(tmp))};
+            stimulus2Location = fullfile(theSoundLocation, ...
+                genderCat{gender}, secondSoundVoice);
+            sound2Files = dir(fullfile(stimulus2Location, '*.wav'));
+            sound2Files = {sound2Files.name};
+            secondSound = char(Sample(sound2Files));
+            secondSoundPath = fullfile(stimulus2Location, secondSound);
         end
-        [sound2,Fsound2] = audioread(secondSound);
+        [sound2,Fsound2] = audioread(secondSoundPath);
         
         cd(homedir);
         % initiate trial with space bar
@@ -142,7 +143,7 @@ try
                 respMat{t, 4} = time_stamp_start_isi;
                 respMat{t, 5} = time_stamp_start_stim2;
                 respMat{t, 6} = time_stamp_KBhit;
-                respMat{t, 7} = KB_hit_key;
+                respMat{t, 7} = KB_hit_key; 
                 stimulusList{t, 1} = firstSound;
                 stimulusList{t, 2} = secondSound;
             elseif keyCode(KbName('esc'))
@@ -152,7 +153,7 @@ try
             end
         end              
     end 
-     Screen('CloseAll'); clear mex
+     Screen('CloseAll'); %clear mex
 catch ME
     cd(homedir)
     Screen('CloseAll'); clear mex
@@ -228,9 +229,9 @@ saveFiles();
                     Screen('Flip', window);
                 end
                 KbReleaseWait;
-                keyIsDown = 0;
+                keyIsDown  = 0;
             end
         end
         WaitSecs(endoftrialpauseDur);
     end
-end
+ end

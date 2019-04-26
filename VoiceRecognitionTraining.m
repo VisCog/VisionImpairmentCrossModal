@@ -5,7 +5,7 @@ function VoiceRecognitionTraining(participantname)
 % If participant answers incorrectly, the trial is repeated.
 % Saves trial by trial data
 %
-% written by Gg Tran & Ione Fine 2019
+% written by Gg Tran & Ione Fine & Kelly Chang 2019
 % Function file(s) use: PseudoRandom.m
 % Sound files used: 220Hz_300ms, 440Hz_50ms, wrongAnswer
 %
@@ -13,7 +13,7 @@ function VoiceRecognitionTraining(participantname)
 close all; clc; sca;
 
 if ~exist('participantname', 'var') ||  isempty(participantname)
-    participantname = 'TRAIN fING';
+    participantname = 'TRAINING';
 end
 
 %% directories & subject's identifier
@@ -81,7 +81,7 @@ Screen('Flip', window);
 
 try
     %Starting the experiment trials
-    for t = 1:ntrials
+    for t = 250
         respMat{t, 8} = 1;  %Set default answer to first try as correct
         gender = randomCondition(t, 1);
         condition = randomCondition(t, 2); %pick Different or Similar condition
@@ -99,34 +99,35 @@ try
         
         %% find the stimuli folders
         % load first stimulus
-        stimulus1Location = [theSoundLocation filesep genderCat{gender} filesep ...
-            fnameShuffled{gender}{t}];
-        cd(stimulus1Location)
-        tmp = dir('*.wav'); tmp = {tmp.name};
+        firstSoundVoice = fnameShuffled{gender}{randi(length(fnameShuffled{gender}))};
+        stimulus1Location = fullfile(theSoundLocation, genderCat{gender}, ...
+            firstSoundVoice);
+        tmp = dir(fullfile(stimulus1Location, '*.wav'));
+        tmp = {tmp.name};
         
         %Pick the file name of the first sound
         sound1_index = randi(numel(tmp));
         firstSound = tmp{sound1_index};
-        [sound1, Fsound1] = audioread(firstSound);
+        firstSoundPath = fullfile(stimulus1Location, firstSound);
+        [sound1, Fsound1] = audioread(firstSoundPath);
+        
         % load second stimulus
         %If condition is similar, pick another sound in same subfolder
         if condition == 1
-            tmp = setdiff(tmp, firstSound);
-            tmp2 = randperm(length(tmp));
-            secondSound = tmp{tmp2(1)};
-            
+            sound2_index = Sample(setdiff(1:numel(tmp), sound1_index));
+            secondSound = tmp{sound2_index};
+            secondSoundPath = fullfile(stimulus1Location, secondSound);      
         else 
-            tmp = setdiff(fnameShuffled{gender},fnameShuffled{gender}{t});
-            tmp2 = randperm(length(tmp));
-            stimulus2Location = [theSoundLocation filesep genderCat{gender}...
-                filesep tmp{tmp2(1)}];
-            cd(stimulus2Location);
-            sound2Name = dir('*.wav');
-            sound2Name = {sound2Name.name};
-            secondSound = sound2Name{randi(length(sound2Name))};
+            tmp = setdiff(fnameShuffled{gender}, firstSoundVoice);
+            secondSoundVoice = tmp{randi(length(tmp))};
+            stimulus2Location = fullfile(theSoundLocation, ...
+                genderCat{gender}, secondSoundVoice);
+            sound2Files = dir(fullfile(stimulus2Location, '*.wav'));
+            sound2Files = {sound2Files.name};
+            secondSound = char(Sample(sound2Files));
+            secondSoundPath = fullfile(stimulus2Location, secondSound);
         end
-        [sound2,Fsound2] = audioread(secondSound);
-        cd(homedir);
+        [sound2,Fsound2] = audioread(secondSoundPath);
         
         % initiate trial with space bar
         go = 0;
