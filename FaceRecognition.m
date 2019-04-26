@@ -3,15 +3,12 @@ function FaceRecognition(participantname)
 % Displays face images and subjects have to say if "same" or "different"
 % Saves trial by trial data
 %
-% written by Gg Tran & Ione Fine 2019
+% written by Gg Tran & Ione Fine & Kelly Chang 2019
 %
 % Function files used include: Psychtoolbox, PseudoRandom.m
 % Sound files used: 220Hz_300ms, 440Hz_50ms
 %
 % 3/11/2019 Ione made the stimulus presentation a function
-%
-% Running the program: 
-% Put in the function FaceRecognition('name') into the command window
 
 
 clc; % clear command window
@@ -35,7 +32,7 @@ cd(homedir);
 
 %% trial variables
 
-ntrials = 5; %number of trials
+ntrials = 100; %number of trials
 initpauseDur = 0.2; % initial pause after space bar
 stimDur = 1.5; % each face up for 1s
 pauseDur = 0.5; % interface gap of 0.5s
@@ -102,8 +99,11 @@ try
 
         %% find the stimuli folders
         % load first stimulus
-        stimulus1Location = [theImageLocation filesep genderCat{gender}...
-            filesep fnameShuffled{gender}{t}];
+        genderFolders = [theImageLocation filesep genderCat{gender}];
+        cd(genderFolders);
+        tmp = dir(); tmp = randi(length(tmp));
+        Stimulus1Folder = fnameShuffled{gender}{tmp};
+        stimulus1Location = [genderFolders filesep Stimulus1Folder];
         cd(stimulus1Location);
         tmp = dir(['*', pict1type, '*.jpg']);
         pict1Name  = tmp.name;
@@ -111,11 +111,11 @@ try
         imageTexture1 = Screen('MakeTexture', window, image1);
         
         % load second stimulus
-        if condition ==1 % same condition
+        if condition == 1 % same condition
             stimulus2Location = stimulus1Location;
         else 
-            tmp=setdiff(fnameShuffled{gender},fnameShuffled{gender}{t});
-            tmp2=randperm(length(tmp));
+            tmp = setdiff(fnameShuffled{gender}, Stimulus1Folder);
+            tmp2 = randperm(length(tmp));
             stimulus2Location = [theImageLocation filesep genderCat{gender}...
                 filesep tmp{tmp2(1)}];
         end
