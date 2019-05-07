@@ -217,20 +217,19 @@ saveFiles();
         Screen('DrawTexture', window, grayTexture);
         Screen('Flip', window);
         
-        %Wait for participantname to press either left arrow(different)/right arrow(similar) key
+        %Wait for participantname to press either f(different)/j(similar) key
         Screen('FillRect', window, [7, 60, 249], windowRect);
         Screen('Flip', window);
         go = 0;
         while go == 0
             [keyIsDown, keysecs1, keyCode1] = KbCheck;
             if keyIsDown
-                if keyCode1(KbName('left')) == 1
-                    KB_hit_key = KbName('left'); go = 1;
+                if keyCode1(KbName('f')) == 1
+                    KB_hit_key = KbName('f');go = 1;
                     time_stamp_KBhit = keysecs1;
                     if condition == 1 % if incorrect answer given
                         respMat{t, 8} = 0; %if they press wrong or right on 1st try
-%                         p3 = audioplayer(wrong, FsWrong);
-                        playblocking(p3);
+                        p3 = audioplayer(wrong, FsWrong); playblocking(p3);
                         Screen('DrawText', window, 'Wrong answer! Redo trial!',...
                         windowRect(3)/2, windowRect(4)/2, black);
                         Screen('Flip', window);
@@ -238,8 +237,8 @@ saveFiles();
                               time_stamp_start_stim2, time_stamp_KBhit,...
                               KB_hit_key] = PresentVoices();  
                     end
-                elseif keyCode1(KbName('right')) == 1
-                    KB_hit_key = KbName('right'); go = 1;
+                elseif keyCode1(KbName('j')) == 1
+                    KB_hit_key = KbName('j'); go = 1;
                     time_stamp_KBhit = keysecs1;
                     if condition == 2 % if incorrect answer given
                         respMat{t, 8} = 0;
