@@ -19,7 +19,7 @@ if ~exist('participantname', 'var') ||  isempty(participantname)
 end
 
 if ~exist('ntrials', 'var') ||  isempty(ntrials)
-    ntrials = 150;
+    ntrials = 50;
 end
 
 %% directories & subject's identifier
@@ -252,7 +252,6 @@ saveFiles();
                     time_stamp_KBhit = keysecs1;
                     if condition == 1 % if incorrect answer given
                         respMat{t, 8} = 0; %if they press wrong or right on 1st try
-                        %                         p3 = audioplayer(wrong, FsWrong);
                         playblocking(p3);
                         Screen('DrawText', window, 'Wrong answer! Redo trial!',...
                             windowRect(3)/2, windowRect(4)/2, black);

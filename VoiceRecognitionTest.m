@@ -1,4 +1,4 @@
-function VoiceRecognitionTest(participantname)
+function VoiceRecognitionTest(participantname, ntrials)
 %
 % Displays people voices and subjects have to say if "same" or "different"
 % voices.
@@ -16,6 +16,11 @@ if ~exist('participantname', 'var') ||  isempty(participantname)
     participantname = 'TRAINING';
 end
 
+if ~exist('ntrials', 'var') ||  isempty(ntrials)
+    ntrials = 50;
+end
+
+
 %% directories & subject's identifier
 
 fileName = strcat(datestr(now, 'yyyy-mm-dd-HH-MM-SS'), '.mat');
@@ -25,8 +30,6 @@ mkdir(participantname) %make a new directory in their name, existed foldername w
 cd(homedir);
 
 %% trial variables
-
-ntrials = 30; %number of trials
 initpauseDur = 0.2; % initial pause after space bar
 stimDur = 1.5; % each face up for 1s
 pauseDur = 0.5; % interface gap of 0.5s
@@ -37,6 +40,7 @@ randomCondition = PseudoRandom(ntrials, 2, 2);
 [y440_long,Fs] = audioread([homedir filesep 'beep_sounds\440Hz_200ms.wav']);
 [y440,Fs] = audioread([homedir filesep 'beep_sounds\440Hz_50ms.wav']);
 [y220,Fs] = audioread([homedir filesep 'beep_sounds\220Hz_300ms.wav']);
+[yEnd,FsEnd] = audioread([homedir filesep 'beep_sounds\EndOfExperiment.wav']);
 theSoundLocation = [homedir filesep 'voice_stim_test'];
 cd(theSoundLocation);
 addpath(genpath(theSoundLocation));
@@ -46,9 +50,15 @@ trial = cell(ntrials, 1);
 respMat = cell(ntrials, 7);
 stimulusList = cell(ntrials, 2);
 
-%% Randomize both the Male & Female stimulus folders
+%% Initialize variables to help process stimulus
 genderCat = {'Female', 'Male'};
+usedMaleFolders = []; 
+usedFemaleFolders = [];
+tmpList = [];
+firstSoundVoice = '';
 fnameShuffled = {'FemaleFiles', 'MaleFiles'};
+
+%% Randomize both the Male & Female stimulus folders
 for index = 1:2
     genderFolder = genderCat{index};
     cd([theSoundLocation filesep genderFolder])
@@ -77,18 +87,20 @@ grayTexture = Screen('MakeTexture', window, ...
 oldTextSize = Screen('TextSize', window, 40);
 Screen('DrawTexture', window, grayTexture);
 Screen('Flip', window);
+HideCursor;
 
 try
     %% Starting the experiment trials
     for t = 1:ntrials        
         gender = randomCondition(t, 1);
-        condition = randomCondition(t, 2); %pick Different or Similar condition
+%         condition = randomCondition(t, 2); %pick Different or Similar condition
+condition = 1;
         
         Screen('FillRect', window, [66, 229, 244], windowRect);
         Screen('Flip', window);
         Screen('DrawText', window, 'New Trial. Press esc to quit.', windowRect(3)/2, ...
             windowRect(4)/2, black);
-        Screen('Flip', window);
+        Screen('Flip', window) ;
         
         %First beep indicate start of trial.
         time_stamp_beep_start_trial = GetSecs;
@@ -96,15 +108,35 @@ try
         
         %% find the stimuli folders
         % load first stimulus
-        firstSoundVoice = fnameShuffled{gender}{randi(length(fnameShuffled{gender}))};
+        if condition == 1 && t > 1 
+            if gender == 1  
+                 tmpList = usedFemaleFolders;
+            elseif gender == 2   
+                 tmpList = usedMaleFolders;
+            end
+            if length(tmpList) < length(fnameShuffled{gender})
+                firstSoundVoice = Sample(setdiff(fnameShuffled{gender}, tmpList)); 
+            else
+                firstSoundVoice = Sample(fnameShuffled{gender});
+            end
+        else
+            firstSoundVoice = Sample(fnameShuffled{gender});
+        end
+       
+         if gender == 1 && length(tmpList) < length(fnameShuffled{gender})
+                usedFemaleFolders = vertcat(usedFemaleFolders, firstSoundVoice);
+         elseif gender == 2 && length(tmpList) < length(fnameShuffled{gender})
+                usedMaleFolders = vertcat(usedMaleFolders, firstSoundVoice);
+         end
+        
         stimulus1Location = fullfile(theSoundLocation, genderCat{gender}, ...
-            firstSoundVoice);
+             cell2mat(firstSoundVoice));
         tmp = dir(fullfile(stimulus1Location, '*.wav'));
         tmp = {tmp.name};
         
         %Pick the file name of the first sound
-        sound1_index = randi(numel(tmp));
-        firstSound = tmp{sound1_index};
+         sound1_index = randi(numel(tmp));
+         firstSound = tmp{sound1_index};
         firstSoundPath = fullfile(stimulus1Location, firstSound);
         [sound1, Fsound1] = audioread(firstSoundPath);
         
@@ -113,6 +145,7 @@ try
             sound2_index = Sample(setdiff(1:numel(tmp), sound1_index));
             secondSound = tmp{sound2_index};
             secondSoundPath = fullfile(stimulus1Location, secondSound);
+            
         else 
             tmp = setdiff(fnameShuffled{gender}, firstSoundVoice);
             secondSoundVoice = tmp{randi(length(tmp))};
@@ -122,6 +155,14 @@ try
             sound2Files = {sound2Files.name};
             secondSound = char(Sample(sound2Files));
             secondSoundPath = fullfile(stimulus2Location, secondSound);
+            %If stimulus2 not in used folders, add it to the used folder
+            if isempty(find(strcmp(tmpList, secondSoundVoice))) == 1
+                 if gender == 1 && length(usedFemaleFolders) < length(fnameShuffled{gender})
+                    usedFemaleFolders = vertcat(usedFemaleFolders, secondSoundVoice);
+                elseif gender == 2 && length(usedMaleFolders) < length(fnameShuffled{gender})
+                    usedMaleFolders = vertcat(usedMaleFolders, secondSoundVoice);
+                end        
+            end    
         end
         [sound2,Fsound2] = audioread(secondSoundPath);
         
@@ -152,11 +193,14 @@ try
                   return;    
             end
         end              
-    end 
+    end
+     sound(yEnd, FsEnd);
      Screen('CloseAll'); %clear mex
 catch ME
     cd(homedir)
-    Screen('CloseAll'); clear mex
+      Screen('CloseAll'); 
+%       clear mex
+    rethrow(ME);
 end
 saveFiles();
 
@@ -210,14 +254,14 @@ saveFiles();
         while go == 0
             [keyIsDown, keysecs1, keyCode1] = KbCheck;
             if keyIsDown
-                if keyCode1(KbName('f')) == 1
-                    KB_hit_key = KbName('f');go = 1;
+                if keyCode1(KbName('left')) == 1
+                    KB_hit_key = KbName('left'); go = 1;
                     time_stamp_KBhit = keysecs1;
                     if condition == 1 % if incorrect
                         sound(y440_long, Fs);
                     end
-                elseif keyCode1(KbName('j')) == 1
-                    KB_hit_key = KbName('j');go = 1;
+                elseif keyCode1(KbName('right')) == 1
+                    KB_hit_key = KbName('right'); go = 1;
                     time_stamp_KBhit = keysecs1;
                     if condition == 2
                         sound(y440_long, Fs);

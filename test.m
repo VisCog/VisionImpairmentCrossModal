@@ -10,7 +10,7 @@ cd(homedir);
 
 %% Randomize the conditions: female/male, similar/different);
 
-ntrials = 100;
+ntrials = 50;
 randomCondition = PseudoRandom(ntrials, 2, 2);
 theSoundLocation = [homedir filesep 'voice_stim_test'];
 cd(theSoundLocation);
@@ -42,43 +42,33 @@ cd(homedir);
 
 %% run trials
 for t = 1:ntrials        
-        gender = randomCondition(t, 1);
-        condition = randomCondition(t, 2); %pick Different or Similar condition
+         gender = randomCondition(t, 1);
+%         condition = randomCondition(t, 2); %pick Different or Similar condition
+        condition = 1;
         
         %% find the stimuli folders
         % load first stimulus
         if condition == 1 && t > 1 
-            if gender == 1  % && length(usedFemaleFolders) < length(fnameShuffled{gender})
+            if gender == 1  
                  tmpList = usedFemaleFolders;
-%                 firstSoundVoice = Sample(setdiff(fnameShuffled{gender}, ...
-%                     usedFemaleFolders)); 
-            elseif gender == 2   %&& length(usedMaleFolders) < length(fnameShuffled{gender})
+            elseif gender == 2   
                  tmpList = usedMaleFolders;
-%                   firstSoundVoice = Sample(setdiff(fnameShuffled{gender}, ...
-%                             usedMaleFolders)); 
             end
-            firstSoundVoice = Sample(setdiff(fnameShuffled{gender}, tmpList));                            
+            if length(tmpList) < length(fnameShuffled{gender})
+                firstSoundVoice = Sample(setdiff(fnameShuffled{gender}, tmpList)); 
+            else
+                firstSoundVoice = Sample(fnameShuffled{gender});
+            end
         else
             firstSoundVoice = Sample(fnameShuffled{gender});
         end
-
-%             if t > 1 && length(tmpList) < length(fnameShuffled{gender})
-%                 firstSoundVoice = Sample(setdiff(fnameShuffled{gender}, tmpList)); 
-%             else
-%                 firstSoundVoice = Sample(fnameShuffled{gender});
-%             end
-%         end
-        
+       
          if gender == 1 && length(tmpList) < length(fnameShuffled{gender})
                 usedFemaleFolders = vertcat(usedFemaleFolders, firstSoundVoice);
-%                 tmpList = usedFemaleFolders;
          elseif gender == 2 && length(tmpList) < length(fnameShuffled{gender})
                 usedMaleFolders = vertcat(usedMaleFolders, firstSoundVoice);
-%                 tmpList = usedMaleFolders;
          end
         
-%         tmpIndex = randi(length(fnameShuffled{gender})); 
-%         firstSoundVoice = fnameShuffled{gender}{tmpIndex};
         stimulus1Location = fullfile(theSoundLocation, genderCat{gender}, ...
              cell2mat(firstSoundVoice));
         tmp = dir(fullfile(stimulus1Location, '*.wav'));
@@ -87,7 +77,6 @@ for t = 1:ntrials
         %Pick the file name of the first sound
          sound1_index = randi(numel(tmp));
          firstSound = tmp{sound1_index};
-%         firstSound = cell2mat(Sample(tmp));
         firstSoundPath = fullfile(stimulus1Location, firstSound);
         [sound1, Fsound1] = audioread(firstSoundPath);
         
