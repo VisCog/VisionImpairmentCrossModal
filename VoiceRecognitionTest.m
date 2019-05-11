@@ -93,8 +93,7 @@ try
     %% Starting the experiment trials
     for t = 1:ntrials        
         gender = randomCondition(t, 1);
-%         condition = randomCondition(t, 2); %pick Different or Similar condition
-condition = 1;
+        condition = randomCondition(t, 2); %pick Different or Similar condition
         
         Screen('FillRect', window, [66, 229, 244], windowRect);
         Screen('Flip', window);
