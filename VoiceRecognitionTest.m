@@ -194,11 +194,11 @@ try
         end              
     end
      sound(yEnd, FsEnd);
-     Screen('CloseAll'); %clear mex
+     Screen('CloseAll'); clear mex
 catch ME
     cd(homedir)
-      Screen('CloseAll'); 
-%       clear mex
+    Screen('CloseAll'); 
+    clear mex
     rethrow(ME);
 end
 saveFiles();
@@ -246,7 +246,7 @@ saveFiles();
         Screen('DrawTexture', window, grayTexture);
         Screen('Flip', window);
         
-        %Wait for participantname to press either f(different)/j(similar) key
+        %Wait for participantname to press either left(different)/right(similar) key
         Screen('FillRect', window, [7, 60, 249], windowRect);
         Screen('Flip', window);
         go = 0;

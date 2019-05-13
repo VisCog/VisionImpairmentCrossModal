@@ -10,7 +10,7 @@ cd(homedir);
 
 %% Randomize the conditions: female/male, similar/different);
 
-ntrials = 50;
+ntrials = 40;
 randomCondition = PseudoRandom(ntrials, 2, 2);
 theSoundLocation = [homedir filesep 'voice_stim_test'];
 cd(theSoundLocation);
@@ -25,6 +25,7 @@ tmpList = [];
 genderCat = {'Female', 'Male'};
 usedMaleFolders = []; 
 usedFemaleFolders = []; 
+folder1 = [];
 firstSoundVoice = '';
 fnameShuffled = {'FemaleFiles', 'MaleFiles'};
 
@@ -46,9 +47,13 @@ for t = 1:ntrials
 %         condition = randomCondition(t, 2); %pick Different or Similar condition
         condition = 1;
         
+        usedFemaleFolders = unique(usedFemaleFolders);
+         usedMaleFolders = unique(usedMaleFolders);
+         
         %% find the stimuli folders
         % load first stimulus
-        if condition == 1 && t > 1 
+        if condition == 1 && isempty(usedFemaleFolders) == 0 ...
+                 && isempty(usedMaleFolders) == 0
             if gender == 1  
                  tmpList = usedFemaleFolders;
             elseif gender == 2   
@@ -69,6 +74,7 @@ for t = 1:ntrials
                 usedMaleFolders = vertcat(usedMaleFolders, firstSoundVoice);
          end
         
+         folder1 = vertcat(folder1, firstSoundVoice);
         stimulus1Location = fullfile(theSoundLocation, genderCat{gender}, ...
              cell2mat(firstSoundVoice));
         tmp = dir(fullfile(stimulus1Location, '*.wav'));

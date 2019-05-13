@@ -50,13 +50,9 @@ firstSoundVoice = '';
 %Randomize the conditions: male/female, similar/different, the picture
 %categegory of the 1st stimulus);
 randomCondition = PseudoRandom(ntrials, 2, 2, 6);
-
-%% Beep sounds used
-
 [y440_long,Fs440_long] = audioread([homedir filesep 'beep_sounds\440Hz_200ms.wav']);
 [y440,Fs440] = audioread([homedir filesep 'beep_sounds\440Hz_50ms.wav']); % new trial sound
 [y220,Fs220] = audioread([homedir filesep 'beep_sounds\220Hz_300ms.wav']); % wrong keypress
-[yEnd,FsEnd] = audioread([homedir filesep 'beep_sounds\EndOfExperiment.wav']);
 
 %% Initialize all data structures to be saved to log file
 
@@ -174,8 +170,7 @@ try
                 pict2type = pictCategories{6};
         end
         %FIND THE FILE NAME OF THE SECOND PICT
-        tmp = dir(fullfile(stimulus2Location,...
-            ['*', pict2type, '*.jpg']));       
+        tmp = dir(['*', pict2type, '*.jpg']);
         pict2Name  = tmp.name;
         image2 = imread(pict2Name);
         imageTexture2 = Screen('MakeTexture', window, image2);
@@ -210,7 +205,6 @@ try
         end
         
     end
-     sound(yEnd, FsEnd);
      Screen('CloseAll'); clear mex
 catch ME
     cd(homedir);
@@ -258,11 +252,11 @@ saveFiles()
         while go == 0
             [keyIsDown, keysecs1, keyCode1] = KbCheck;
             if keyIsDown
-                if keyCode1(KbName('left')) == 1
-                    KB_hit_key = KbName('left'); go = 1;
+                if keyCode1(KbName('f')) == 1
+                    KB_hit_key = KbName('f'); go = 1;
                     time_stamp_KBhit = keysecs1;
-                elseif keyCode1(KbName('right')) == 1
-                    KB_hit_key = KbName('right');go = 1;
+                elseif keyCode1(KbName('j')) == 1
+                    KB_hit_key = KbName('j');go = 1;
                     time_stamp_KBhit = keysecs1;
                 else
                     sound(y220, Fs220);
