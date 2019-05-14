@@ -106,7 +106,7 @@ try
 %             'Pick trials number. Spacebar to skip.', ...
 %             windowRect(3)*0.1, windowRect(4)*0.1, [255, 255, 255]);
 %             Screen('Flip', window);
-        while startKey(KbName('space')) == 0 && keyIsDown == 0
+        while keyIsDown == 0
               number = GetScreenNumber(window, ...
                   'Enter trial number(press Spacebar to skip this step): ', ...
                      windowRect(3)*0.1, windowRect(4)*0.1, [255, 255, 255], grey);
@@ -114,13 +114,11 @@ try
 %                      number = 50;
 %                  end
         end
-%          if startKey(KbName('space')) == 1
-%                      number = 50;
-%          end
+         if startKey(KbName('space')) == 1
+                     number = 50;
+         end
         if ~isempty(number)
             ntrials = number;
-%         else
-%             ntrials = 50;
         end
         
         %% Initialize all data structures to be saved to log file

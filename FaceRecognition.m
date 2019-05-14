@@ -3,6 +3,7 @@ function FaceRecognition(participantname, ntrials)
 % Displays face images and subjects have to say if "same" or "different"
 % Saves trial by trial data
 %
+% Program is written to compatibly run in Windows 7 32-bit
 % written by Gg Tran & Ione Fine & Kelly Chang 2019
 %
 % Function files used include: Psychtoolbox, PseudoRandom.m

@@ -9,6 +9,7 @@ try
     black = BlackIndex(0);
     gray = GrayIndex(0);
     
+  
     fullRect = Screen('Rect', 0);
     [window,rect] = Screen('OpenWindow', 0, gray, floor(fullRect/4));
     
