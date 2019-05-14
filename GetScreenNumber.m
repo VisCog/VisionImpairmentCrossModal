@@ -1,3 +1,5 @@
+%Function written by Kelly Chang
+
 function [number] = GetScreenNumber(windowPtr,msg,x,y,textColor,bgColor)
 % [number] = GetScreenNumber(windowPtr,msg,x,y,textColor,bgColor)
 %% Input Control
