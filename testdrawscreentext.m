@@ -1,4 +1,4 @@
-
+ 
 
 clear all; close all;
 
@@ -7,6 +7,8 @@ KbName('UnifyKeyNames')
 try
     white = WhiteIndex(0);
     black = BlackIndex(0);
+    
+    
     gray = GrayIndex(0);
     
   

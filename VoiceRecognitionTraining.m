@@ -32,7 +32,6 @@ cd(homedir);
 
 %% trial variables
 
-% ntrials = 250; %number of trials
 initpauseDur = 0.2; % initial pause after space bar
 stimDur = 1.5; % each face up for 1s
 pauseDur = 0.5; % interface gap of 0.5s
@@ -46,7 +45,6 @@ randomCondition = PseudoRandom(ntrials, 2, 2);
 [y440,Fs] = audioread([homedir filesep 'beep_sounds\440Hz_50ms.wav']);
 [y220,Fs220] = audioread([homedir filesep 'beep_sounds\220Hz_300ms.wav']);
 [wrong, FsWrong] = audioread([homedir filesep 'beep_sounds\wrongAnswer.wav']);
-p3 = audioplayer(wrong, FsWrong);
 [yEnd,FsEnd] = audioread([homedir filesep 'beep_sounds\EndOfExperiment.wav']);
 theSoundLocation = [homedir filesep 'voice_stim_training'];
 cd(theSoundLocation);
@@ -98,35 +96,17 @@ grey = white / 2;
 try
     
     % Prompt user input on number of trials
-        number = []; 
-%         KbWait;
-          [~, keyIsDown, startKey] = KbCheck;
-%         while isempty(number) || startKey(KbName('space')) == 0
-%              Screen('DrawText', window,...
-%             'Pick trials number. Spacebar to skip.', ...
-%             windowRect(3)*0.1, windowRect(4)*0.1, [255, 255, 255]);
-%             Screen('Flip', window);
-        while startKey(KbName('space')) == 0 && keyIsDown == 0
-              number = GetScreenNumber(window, ...
-                  'Enter trial number(press Spacebar to skip this step): ', ...
-                     windowRect(3)*0.1, windowRect(4)*0.1, [255, 255, 255], grey);
-%                  if startKey(KbName('space')) == 1
-%                      number = 50;
-%                  end
-        end
-%          if startKey(KbName('space')) == 1
-%                      number = 50;
-%          end
-        if ~isempty(number)
-            ntrials = number;
-%         else
-%             ntrials = 50;
-        end
         
-        %% Initialize all data structures to be saved to log file
-        trial = cell(ntrials, 1);
-        respMat = cell(ntrials, 8);
-        stimulusList = cell(ntrials, 2);
+     number = GetScreenNumber(window, 'Trial number(enter to skip): ', ...
+                windowRect(3)*0.05 - 50, windowRect(4)*0.05, [255, 255, 255], grey);
+     if ~isnan(number)
+        ntrials = number;               
+     end
+                
+     %% Initialize all data structures to be saved to log file
+     trial = cell(ntrials, 1);
+     respMat = cell(ntrials, 8);
+     stimulusList = cell(ntrials, 2);
 
     %Starting the experiment trial
     for t = 1:ntrials
@@ -305,7 +285,7 @@ saveFiles();
                     time_stamp_KBhit = keysecs1;
                     if condition == 1 % if incorrect answer given
                         respMat{t, 8} = 0; %if they press wrong or right on 1st try
-                        playblocking(p3);
+                        sound(wrong, FsWrong);
                         Screen('DrawText', window, 'Wrong answer! Redo trial!',...
                             windowRect(3)/2, windowRect(4)/2, black);
                         Screen('Flip', window);
@@ -318,7 +298,7 @@ saveFiles();
                     time_stamp_KBhit = keysecs1;
                     if condition == 2 % if incorrect answer given
                         respMat{t, 8} = 0;
-                        playblocking(p3);
+                        sound(wrong, FsWrong);
                         Screen('DrawText', window, 'Wrong answer! Redo trial!',...
                             windowRect(3)/2 - 300, windowRect(4)/2, black);
                         Screen('Flip', window);
@@ -328,7 +308,7 @@ saveFiles();
                     end
                 else
                     sound(y220, Fs220);
-                    Screen('DrawText', window, 'Wrong key pressed!  Press Again',...
+                    Screen('DrawText', window, 'Wrong key pressed! Press Again',...
                         windowRect(3)/2 - 300, windowRect(4)/2, black);
                     Screen('Flip', window);
                 end
