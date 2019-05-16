@@ -1,4 +1,4 @@
-mcc -C -o VoiceRecognitionTraining -W WinMain:VoiceRecognitionTraining -T link:exe -d C:\Users\Administrator\Desktop\VisionImpairmentCrossModal-master\VoiceRecognitionTrainingApp\for_testing -v C:\Users\Administrator\Desktop\VisionImpairmentCrossModal-master\VoiceRecognitionTraining.m 
+mcc -C -o VoiceRecognitionTraining -W WinMain:VoiceRecognitionTraining -T link:exe -d C:\Users\Administrator\Desktop\VisionImpairmentCrossModal\VoiceRecognitionTrainingApp\for_testing -v C:\Users\Administrator\Desktop\VisionImpairmentCrossModal\VoiceRecognitionTraining.m 
 Compiler version: 6.1 (R2015b)
 
 Dependency analysis by REQUIREMENTS.
@@ -12,25 +12,25 @@ PsychStartup: the 32-Bit or 64-Bit GStreamer SDK from www.gstreamer.com is not i
 PsychStartup: The Psychtoolbox Screen() multimedia functions will fail to work until you fix
 PsychStartup: this! Read 'help GStreamer' for instructions.
 
-Begin validation of MEX files: Tue Apr 30 18:17:20 2019
-End validation of MEX files: Tue Apr 30 18:17:20 2019
+Begin validation of MEX files: Tue May 14 12:41:04 2019
+End validation of MEX files: Tue May 14 12:41:04 2019
 [Warning: Adding path
-"C:\Users\Administrator\Desktop\VisionImpairmentCrossModal-master" to Compiler
-path instance.] 
+"C:\Users\Administrator\Desktop\VisionImpairmentCrossModal" to Compiler path
+instance.] 
 [] 
-Parsing file "C:\Users\Administrator\Desktop\VisionImpairmentCrossModal-master\VoiceRecognitionTraining.m"
+Parsing file "C:\Users\Administrator\Desktop\VisionImpairmentCrossModal\VoiceRecognitionTraining.m"
 	(Referenced from: "Compiler Command Line").
 Deleting 4 temporary MEX authorization files.
-Removing: 'C:\Users\ADMINI~1\AppData\Local\Temp\mathworks_tmp_00f549702_3924.auth'.
-Removing: 'C:\Users\ADMINI~1\AppData\Local\Temp\mathworks_tmp_00f543114_3924.auth'.
-Removing: 'C:\Users\ADMINI~1\AppData\Local\Temp\mathworks_tmp_00f5430177_3924.auth'.
-Removing: 'C:\Users\ADMINI~1\AppData\Local\Temp\mathworks_tmp_00f5414757_3924.auth'.
-Generating file "C:\Users\Administrator\Desktop\VisionImpairmentCrossModal-master\VoiceRecognitionTrainingApp\for_testing\readme.txt".
+Removing: 'C:\Users\ADMINI~1\AppData\Local\Temp\mathworks_tmp_00ba832469_2984.auth'.
+Removing: 'C:\Users\ADMINI~1\AppData\Local\Temp\mathworks_tmp_00ba815062_2984.auth'.
+Removing: 'C:\Users\ADMINI~1\AppData\Local\Temp\mathworks_tmp_00ba826933_2984.auth'.
+Removing: 'C:\Users\ADMINI~1\AppData\Local\Temp\mathworks_tmp_00ba824161_2984.auth'.
+Generating file "C:\Users\Administrator\Desktop\VisionImpairmentCrossModal\VoiceRecognitionTrainingApp\for_testing\readme.txt".
 Packaging...
-Adding custom icon C:\Program Files\MATLAB\R2015b\toolbox\compiler\Resources\default_icon.ico to C:\Users\Administrator\Desktop\VisionImpairmentCrossModal-master\VoiceRecognitionTrainingApp\for_testing\VoiceRecognitionTraining.exe.
-Attempting to embed the CTF archive into the application C:\Users\Administrator\Desktop\VisionImpairmentCrossModal-master\VoiceRecognitionTrainingApp\for_testing\VoiceRecognitionTraining.exe.
+Adding custom icon C:\Program Files\MATLAB\R2015b\toolbox\compiler\Resources\default_icon.ico to C:\Users\Administrator\Desktop\VisionImpairmentCrossModal\VoiceRecognitionTrainingApp\for_testing\VoiceRecognitionTraining.exe.
+Attempting to embed the CTF archive into the application C:\Users\Administrator\Desktop\VisionImpairmentCrossModal\VoiceRecognitionTrainingApp\for_testing\VoiceRecognitionTraining.exe.
 Finished embedding CTF archive. Deleting the external CTF archive.
 Creating the bundle...
-Web based installer created at C:\Users\Administrator\Desktop\VisionImpairmentCrossModal-master\VoiceRecognitionTrainingApp\for_redistribution\MyAppInstaller_web.exe.
+Web based installer created at C:\Users\Administrator\Desktop\VisionImpairmentCrossModal\VoiceRecognitionTrainingApp\for_redistribution\MyAppInstaller_web.exe.
 Packaging complete.
-Elapsed packaging time was: 3 minutes and 29 seconds.
+Elapsed packaging time was: 2 minutes and 23 seconds.

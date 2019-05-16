@@ -1,0 +1,150 @@
+<deployment-project plugin="plugin.ezdeploy" plugin-version="1.0">
+  <configuration build-checksum="3851891351" file="C:\Users\Administrator\Desktop\VisionImpairmentCrossModal\VoiceRecognitionTraining.prj" location="C:\Users\Administrator\Desktop\VisionImpairmentCrossModal" name="VoiceRecognitionTraining" preferred-package-location="C:\Users\Administrator\Desktop\VisionImpairmentCrossModal\VoiceRecognitionTraining\for_redistribution" preferred-package-type="package.type.exe" target="target.ezdeploy.standalone" target-name="Application Compiler">
+    <param.appname>VoiceRecognitionTraining</param.appname>
+    <param.icon />
+    <param.icons />
+    <param.version>1.0</param.version>
+    <param.authnamewatermark />
+    <param.email />
+    <param.company />
+    <param.summary />
+    <param.description />
+    <param.screenshot />
+    <param.guid />
+    <param.installpath.string>\VoiceRecognitionTraining\</param.installpath.string>
+    <param.installpath.combo>option.installpath.programfiles</param.installpath.combo>
+    <param.logo />
+    <param.install.notes />
+    <param.target.install.notes />
+    <param.intermediate>${PROJECT_ROOT}\VoiceRecognitionTraining\for_testing</param.intermediate>
+    <param.files.only>${PROJECT_ROOT}\VoiceRecognitionTraining\for_redistribution_files_only</param.files.only>
+    <param.output>${PROJECT_ROOT}\VoiceRecognitionTraining\for_redistribution</param.output>
+    <param.enable.clean.build>false</param.enable.clean.build>
+    <param.user.defined.mcr.options />
+    <param.embed.ctf>true</param.embed.ctf>
+    <param.target.type>subtarget.standalone</param.target.type>
+    <param.support.packages />
+    <param.required.mcr.products>
+      <item>35000</item>
+      <item>35010</item>
+    </param.required.mcr.products>
+    <param.web.mcr>true</param.web.mcr>
+    <param.package.mcr>false</param.package.mcr>
+    <param.no.mcr>false</param.no.mcr>
+    <param.web.mcr.name>MyAppInstaller_web</param.web.mcr.name>
+    <param.package.mcr.name>MyAppInstaller_mcr</param.package.mcr.name>
+    <param.no.mcr.name>MyAppInstaller_app</param.no.mcr.name>
+    <param.windows.command.prompt>true</param.windows.command.prompt>
+    <param.create.log>false</param.create.log>
+    <param.log.file />
+    <unset>
+      <param.icon />
+      <param.icons />
+      <param.version />
+      <param.authnamewatermark />
+      <param.email />
+      <param.company />
+      <param.summary />
+      <param.description />
+      <param.screenshot />
+      <param.guid />
+      <param.installpath.string />
+      <param.installpath.combo />
+      <param.logo />
+      <param.target.install.notes />
+      <param.intermediate />
+      <param.files.only />
+      <param.output />
+      <param.enable.clean.build />
+      <param.user.defined.mcr.options />
+      <param.embed.ctf />
+      <param.target.type />
+      <param.support.packages />
+      <param.web.mcr />
+      <param.package.mcr />
+      <param.no.mcr />
+      <param.web.mcr.name />
+      <param.package.mcr.name />
+      <param.no.mcr.name />
+      <param.windows.command.prompt />
+      <param.create.log />
+      <param.log.file />
+    </unset>
+    <fileset.main>
+      <file>${PROJECT_ROOT}\VoiceRecognitionTraining.m</file>
+    </fileset.main>
+    <fileset.resources />
+    <fileset.package />
+    <fileset.depfun>
+      <file>C:\Users\Administrator\Desktop\Psychtoolbox-3-PTB_Beta-2014-04-06_V3.0.11\Psychtoolbox\PsychBasic\GetMouse.m</file>
+      <file>C:\Users\Administrator\Desktop\Psychtoolbox-3-PTB_Beta-2014-04-06_V3.0.11\Psychtoolbox\PsychBasic\KbCheck.m</file>
+      <file>C:\Users\Administrator\Desktop\Psychtoolbox-3-PTB_Beta-2014-04-06_V3.0.11\Psychtoolbox\PsychBasic\KbName.m</file>
+      <file>C:\Users\Administrator\Desktop\Psychtoolbox-3-PTB_Beta-2014-04-06_V3.0.11\Psychtoolbox\PsychBasic\KbPressWait.m</file>
+      <file>C:\Users\Administrator\Desktop\Psychtoolbox-3-PTB_Beta-2014-04-06_V3.0.11\Psychtoolbox\PsychBasic\KbReleaseWait.m</file>
+      <file>C:\Users\Administrator\Desktop\Psychtoolbox-3-PTB_Beta-2014-04-06_V3.0.11\Psychtoolbox\PsychBasic\KbWait.m</file>
+      <file>C:\Users\Administrator\Desktop\Psychtoolbox-3-PTB_Beta-2014-04-06_V3.0.11\Psychtoolbox\PsychBasic\LoadPsychHID.m</file>
+      <file>C:\Users\Administrator\Desktop\Psychtoolbox-3-PTB_Beta-2014-04-06_V3.0.11\Psychtoolbox\PsychBasic\MatlabWindowsFilesR2007a\GetSecs.mexw32</file>
+      <file>C:\Users\Administrator\Desktop\Psychtoolbox-3-PTB_Beta-2014-04-06_V3.0.11\Psychtoolbox\PsychBasic\MatlabWindowsFilesR2007a\PsychHID.mexw32</file>
+      <file>C:\Users\Administrator\Desktop\Psychtoolbox-3-PTB_Beta-2014-04-06_V3.0.11\Psychtoolbox\PsychBasic\MatlabWindowsFilesR2007a\Screen.mexw32</file>
+      <file>C:\Users\Administrator\Desktop\Psychtoolbox-3-PTB_Beta-2014-04-06_V3.0.11\Psychtoolbox\PsychBasic\MatlabWindowsFilesR2007a\WaitSecs.mexw32</file>
+      <file>C:\Users\Administrator\Desktop\Psychtoolbox-3-PTB_Beta-2014-04-06_V3.0.11\Psychtoolbox\PsychBasic\psychlasterror.m</file>
+      <file>C:\Users\Administrator\Desktop\Psychtoolbox-3-PTB_Beta-2014-04-06_V3.0.11\Psychtoolbox\PsychBasic\psychrethrow.m</file>
+      <file>C:\Users\Administrator\Desktop\Psychtoolbox-3-PTB_Beta-2014-04-06_V3.0.11\Psychtoolbox\PsychBasic\ShowCursor.m</file>
+      <file>C:\Users\Administrator\Desktop\Psychtoolbox-3-PTB_Beta-2014-04-06_V3.0.11\Psychtoolbox\PsychHardware\GetKeyboardIndices.m</file>
+      <file>C:\Users\Administrator\Desktop\Psychtoolbox-3-PTB_Beta-2014-04-06_V3.0.11\Psychtoolbox\PsychHardware\GetKeypadIndices.m</file>
+      <file>C:\Users\Administrator\Desktop\Psychtoolbox-3-PTB_Beta-2014-04-06_V3.0.11\Psychtoolbox\PsychHardware\GetMouseIndices.m</file>
+      <file>C:\Users\Administrator\Desktop\Psychtoolbox-3-PTB_Beta-2014-04-06_V3.0.11\Psychtoolbox\PsychJava\PsychJavaSwingCleanup.m</file>
+      <file>C:\Users\Administrator\Desktop\Psychtoolbox-3-PTB_Beta-2014-04-06_V3.0.11\Psychtoolbox\PsychJava\psychusejava.m</file>
+      <file>C:\Users\Administrator\Desktop\Psychtoolbox-3-PTB_Beta-2014-04-06_V3.0.11\Psychtoolbox\PsychObsolete\IsOS9.m</file>
+      <file>C:\Users\Administrator\Desktop\Psychtoolbox-3-PTB_Beta-2014-04-06_V3.0.11\Psychtoolbox\PsychOneliners\BlackIndex.m</file>
+      <file>C:\Users\Administrator\Desktop\Psychtoolbox-3-PTB_Beta-2014-04-06_V3.0.11\Psychtoolbox\PsychOneliners\GetKbChar.m</file>
+      <file>C:\Users\Administrator\Desktop\Psychtoolbox-3-PTB_Beta-2014-04-06_V3.0.11\Psychtoolbox\PsychOneliners\GrayIndex.m</file>
+      <file>C:\Users\Administrator\Desktop\Psychtoolbox-3-PTB_Beta-2014-04-06_V3.0.11\Psychtoolbox\PsychOneliners\IsLinux.m</file>
+      <file>C:\Users\Administrator\Desktop\Psychtoolbox-3-PTB_Beta-2014-04-06_V3.0.11\Psychtoolbox\PsychOneliners\IsOctave.m</file>
+      <file>C:\Users\Administrator\Desktop\Psychtoolbox-3-PTB_Beta-2014-04-06_V3.0.11\Psychtoolbox\PsychOneliners\IsOSX.m</file>
+      <file>C:\Users\Administrator\Desktop\Psychtoolbox-3-PTB_Beta-2014-04-06_V3.0.11\Psychtoolbox\PsychOneliners\IsWin.m</file>
+      <file>C:\Users\Administrator\Desktop\Psychtoolbox-3-PTB_Beta-2014-04-06_V3.0.11\Psychtoolbox\PsychOneliners\PsychtoolboxRoot.m</file>
+      <file>C:\Users\Administrator\Desktop\Psychtoolbox-3-PTB_Beta-2014-04-06_V3.0.11\Psychtoolbox\PsychOneliners\RestoreCluts.m</file>
+      <file>C:\Users\Administrator\Desktop\Psychtoolbox-3-PTB_Beta-2014-04-06_V3.0.11\Psychtoolbox\PsychOneliners\sca.m</file>
+      <file>C:\Users\Administrator\Desktop\Psychtoolbox-3-PTB_Beta-2014-04-06_V3.0.11\Psychtoolbox\PsychOneliners\streq.m</file>
+      <file>C:\Users\Administrator\Desktop\Psychtoolbox-3-PTB_Beta-2014-04-06_V3.0.11\Psychtoolbox\PsychOneliners\WhiteIndex.m</file>
+      <file>C:\Users\Administrator\Desktop\Psychtoolbox-3-PTB_Beta-2014-04-06_V3.0.11\Psychtoolbox\PsychProbability\Randi.m</file>
+      <file>C:\Users\Administrator\Desktop\Psychtoolbox-3-PTB_Beta-2014-04-06_V3.0.11\Psychtoolbox\PsychProbability\Sample.m</file>
+      <file>C:\Users\Administrator\Desktop\Psychtoolbox-3-PTB_Beta-2014-04-06_V3.0.11\Psychtoolbox\PsychRects\RectLeft.m</file>
+      <file>C:\Users\Administrator\Desktop\Psychtoolbox-3-PTB_Beta-2014-04-06_V3.0.11\Psychtoolbox\PsychRects\RectTop.m</file>
+      <file>${PROJECT_ROOT}\PseudoRandom.m</file>
+    </fileset.depfun>
+    <build-deliverables>
+      <file location="${PROJECT_ROOT}\VoiceRecognitionTraining\for_testing" name="VoiceRecognitionTraining.exe" optional="false">C:\Users\Administrator\Desktop\VisionImpairmentCrossModal\VoiceRecognitionTraining\for_testing\VoiceRecognitionTraining.exe</file>
+      <file location="${PROJECT_ROOT}\VoiceRecognitionTraining\for_testing" name="splash.png" optional="false">C:\Users\Administrator\Desktop\VisionImpairmentCrossModal\VoiceRecognitionTraining\for_testing\splash.png</file>
+      <file location="${PROJECT_ROOT}\VoiceRecognitionTraining\for_testing" name="readme.txt" optional="true">C:\Users\Administrator\Desktop\VisionImpairmentCrossModal\VoiceRecognitionTraining\for_testing\readme.txt</file>
+    </build-deliverables>
+    <workflow />
+    <matlab>
+      <root>C:\Program Files\MATLAB\R2015b</root>
+      <toolboxes>
+        <toolbox name="matlabcoder" />
+      </toolboxes>
+      <toolbox>
+        <matlabcoder>
+          <enabled>true</enabled>
+        </matlabcoder>
+      </toolbox>
+    </matlab>
+    <platform>
+      <unix>false</unix>
+      <mac>false</mac>
+      <windows>true</windows>
+      <win2k>false</win2k>
+      <winxp>false</winxp>
+      <vista>false</vista>
+      <linux>false</linux>
+      <solaris>false</solaris>
+      <osver>6.1</osver>
+      <os32>true</os32>
+      <os64>false</os64>
+      <arch>win32</arch>
+      <matlab>true</matlab>
+    </platform>
+  </configuration>
+</deployment-project>

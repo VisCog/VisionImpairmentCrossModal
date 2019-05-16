@@ -1,7 +1,9 @@
 %Function written by Kelly Chang
+%Modified by Gg Tran
 
 function [number] = GetScreenNumber(windowPtr,msg,x,y,textColor,bgColor)
 % [number] = GetScreenNumber(windowPtr,msg,x,y,textColor,bgColor)
+% addpath(genpath('C:\Users\Administrator\Desktop\Psychtoolbox-3-PTB_Beta-2014-04-06_V3.0.11\Psychtoolbox\PsychContributed'))
 %% Input Control
 
 if ~exist('x', 'var'); x = []; end
@@ -26,7 +28,7 @@ if ~isempty(bgColor)
 end
 
 % Clear keyboard event queues
-FlushEvents();
+% FlushEvents();
 
 string = ''; % initialize string
 output = [msg, ' ', string];

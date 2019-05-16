@@ -1,0 +1,36 @@
+mcc -C -o VoiceRecognitionTraining -W WinMain:VoiceRecognitionTraining -T link:exe -d C:\Users\Administrator\Desktop\VisionImpairmentCrossModal\VoiceRecognitionTraining\for_testing -v C:\Users\Administrator\Desktop\VisionImpairmentCrossModal\VoiceRecognitionTraining.m 
+Compiler version: 6.1 (R2015b)
+
+Dependency analysis by REQUIREMENTS.
+
+PsychStartup: Environment variable GSTREAMER_SDK_ROOT_X86 points to non-existent SDK folder?!?
+PsychStartup: The missing or inaccessible path to GStreamer is: 
+PsychStartup: Something is botched. Trying various common locations for the SDK to keep going.
+
+PsychStartup: Path to GStreamer runtime is undefined! This probably means that
+PsychStartup: the 32-Bit or 64-Bit GStreamer SDK from www.gstreamer.com is not installed.
+PsychStartup: The Psychtoolbox Screen() multimedia functions will fail to work until you fix
+PsychStartup: this! Read 'help GStreamer' for instructions.
+
+Begin validation of MEX files: Thu May 16 16:35:17 2019
+End validation of MEX files: Thu May 16 16:35:17 2019
+[Warning: Adding path
+"C:\Users\Administrator\Desktop\VisionImpairmentCrossModal" to Compiler path
+instance.] 
+[] 
+Parsing file "C:\Users\Administrator\Desktop\VisionImpairmentCrossModal\VoiceRecognitionTraining.m"
+	(Referenced from: "Compiler Command Line").
+Deleting 4 temporary MEX authorization files.
+Removing: 'C:\Users\ADMINI~1\AppData\Local\Temp\mathworks_tmp_0082011330_2080.auth'.
+Removing: 'C:\Users\ADMINI~1\AppData\Local\Temp\mathworks_tmp_0082015853_2080.auth'.
+Removing: 'C:\Users\ADMINI~1\AppData\Local\Temp\mathworks_tmp_0082018442_2080.auth'.
+Removing: 'C:\Users\ADMINI~1\AppData\Local\Temp\mathworks_tmp_0082011011_2080.auth'.
+Generating file "C:\Users\Administrator\Desktop\VisionImpairmentCrossModal\VoiceRecognitionTraining\for_testing\readme.txt".
+Packaging...
+Adding custom icon C:\Program Files\MATLAB\R2015b\toolbox\compiler\Resources\default_icon.ico to C:\Users\Administrator\Desktop\VisionImpairmentCrossModal\VoiceRecognitionTraining\for_testing\VoiceRecognitionTraining.exe.
+Attempting to embed the CTF archive into the application C:\Users\Administrator\Desktop\VisionImpairmentCrossModal\VoiceRecognitionTraining\for_testing\VoiceRecognitionTraining.exe.
+Finished embedding CTF archive. Deleting the external CTF archive.
+Creating the bundle...
+Web based installer created at C:\Users\Administrator\Desktop\VisionImpairmentCrossModal\VoiceRecognitionTraining\for_redistribution\MyAppInstaller_web.exe.
+Packaging complete.
+Elapsed packaging time was: 2 minutes and 28 seconds.
