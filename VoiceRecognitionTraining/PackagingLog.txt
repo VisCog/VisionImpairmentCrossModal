@@ -12,8 +12,8 @@ PsychStartup: the 32-Bit or 64-Bit GStreamer SDK from www.gstreamer.com is not i
 PsychStartup: The Psychtoolbox Screen() multimedia functions will fail to work until you fix
 PsychStartup: this! Read 'help GStreamer' for instructions.
 
-Begin validation of MEX files: Thu May 16 16:35:17 2019
-End validation of MEX files: Thu May 16 16:35:17 2019
+Begin validation of MEX files: Tue May 21 14:36:52 2019
+End validation of MEX files: Tue May 21 14:36:52 2019
 [Warning: Adding path
 "C:\Users\Administrator\Desktop\VisionImpairmentCrossModal" to Compiler path
 instance.] 
@@ -21,10 +21,10 @@ instance.]
 Parsing file "C:\Users\Administrator\Desktop\VisionImpairmentCrossModal\VoiceRecognitionTraining.m"
 	(Referenced from: "Compiler Command Line").
 Deleting 4 temporary MEX authorization files.
-Removing: 'C:\Users\ADMINI~1\AppData\Local\Temp\mathworks_tmp_0082011330_2080.auth'.
-Removing: 'C:\Users\ADMINI~1\AppData\Local\Temp\mathworks_tmp_0082015853_2080.auth'.
-Removing: 'C:\Users\ADMINI~1\AppData\Local\Temp\mathworks_tmp_0082018442_2080.auth'.
-Removing: 'C:\Users\ADMINI~1\AppData\Local\Temp\mathworks_tmp_0082011011_2080.auth'.
+Removing: 'C:\Users\ADMINI~1\AppData\Local\Temp\mathworks_tmp_00b502316_2896.auth'.
+Removing: 'C:\Users\ADMINI~1\AppData\Local\Temp\mathworks_tmp_00b5018504_2896.auth'.
+Removing: 'C:\Users\ADMINI~1\AppData\Local\Temp\mathworks_tmp_00b5026040_2896.auth'.
+Removing: 'C:\Users\ADMINI~1\AppData\Local\Temp\mathworks_tmp_00b5032493_2896.auth'.
 Generating file "C:\Users\Administrator\Desktop\VisionImpairmentCrossModal\VoiceRecognitionTraining\for_testing\readme.txt".
 Packaging...
 Adding custom icon C:\Program Files\MATLAB\R2015b\toolbox\compiler\Resources\default_icon.ico to C:\Users\Administrator\Desktop\VisionImpairmentCrossModal\VoiceRecognitionTraining\for_testing\VoiceRecognitionTraining.exe.
@@ -33,4 +33,4 @@ Finished embedding CTF archive. Deleting the external CTF archive.
 Creating the bundle...
 Web based installer created at C:\Users\Administrator\Desktop\VisionImpairmentCrossModal\VoiceRecognitionTraining\for_redistribution\MyAppInstaller_web.exe.
 Packaging complete.
-Elapsed packaging time was: 2 minutes and 28 seconds.
+Elapsed packaging time was: 8 minutes and 36 seconds.

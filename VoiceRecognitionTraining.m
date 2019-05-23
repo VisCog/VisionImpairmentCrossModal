@@ -11,7 +11,7 @@ function VoiceRecognitionTraining(participantname, ntrials)
 %
 
 close all; clc; sca;
-% FlushEvents();
+reset(RandStream.getGlobalStream, sum(100*clock));
 KbName('UnifyKeyNames');
 
 if ~exist('participantname', 'var') ||  isempty(participantname)
@@ -92,7 +92,7 @@ grey = white / 2;
 
 
 try
-    
+    HideCursor;
     % Prompt user input on number of trials        
      number = GetScreenNumber(window, 'Trial number(enter to skip): ', ...
                 windowRect(3)*0.05 - 50, windowRect(4)*0.05, [255, 255, 255], grey);

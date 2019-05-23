@@ -1,17 +1,17 @@
 <deployment-project plugin="plugin.ezdeploy" plugin-version="1.0">
-  <configuration build-checksum="3851891351" file="C:\Users\Administrator\Desktop\VisionImpairmentCrossModal\VoiceRecognitionTraining.prj" location="C:\Users\Administrator\Desktop\VisionImpairmentCrossModal" name="VoiceRecognitionTraining" preferred-package-location="C:\Users\Administrator\Desktop\VisionImpairmentCrossModal\VoiceRecognitionTraining\for_redistribution" preferred-package-type="package.type.exe" target="target.ezdeploy.standalone" target-name="Application Compiler">
+  <configuration build-checksum="3396186303" file="C:\Users\Administrator\Desktop\VisionImpairmentCrossModal\VoiceRecognitionTraining.prj" location="C:\Users\Administrator\Desktop\VisionImpairmentCrossModal" name="VoiceRecognitionTraining" preferred-package-location="C:\Users\Administrator\Desktop\VisionImpairmentCrossModal\VoiceRecognitionTraining\for_redistribution" preferred-package-type="package.type.exe" target="target.ezdeploy.standalone" target-name="Application Compiler">
     <param.appname>VoiceRecognitionTraining</param.appname>
     <param.icon />
     <param.icons />
     <param.version>1.0</param.version>
-    <param.authnamewatermark />
-    <param.email />
-    <param.company />
+    <param.authnamewatermark>Gg Tran &amp; Ione Fine &amp; Kelly Chang</param.authnamewatermark>
+    <param.email>{hien15, ionefine, kchang4}@uw.edu</param.email>
+    <param.company>VisCog @ University of Washing - Seattle</param.company>
     <param.summary />
     <param.description />
     <param.screenshot />
     <param.guid />
-    <param.installpath.string>\VoiceRecognitionTraining\</param.installpath.string>
+    <param.installpath.string>\VisCog @ University of Washing - Seattle\VoiceRecognitionTraining\</param.installpath.string>
     <param.installpath.combo>option.installpath.programfiles</param.installpath.combo>
     <param.logo />
     <param.install.notes />
@@ -41,9 +41,6 @@
       <param.icon />
       <param.icons />
       <param.version />
-      <param.authnamewatermark />
-      <param.email />
-      <param.company />
       <param.summary />
       <param.description />
       <param.screenshot />
@@ -77,6 +74,7 @@
     <fileset.package />
     <fileset.depfun>
       <file>C:\Users\Administrator\Desktop\Psychtoolbox-3-PTB_Beta-2014-04-06_V3.0.11\Psychtoolbox\PsychBasic\GetMouse.m</file>
+      <file>C:\Users\Administrator\Desktop\Psychtoolbox-3-PTB_Beta-2014-04-06_V3.0.11\Psychtoolbox\PsychBasic\HideCursor.m</file>
       <file>C:\Users\Administrator\Desktop\Psychtoolbox-3-PTB_Beta-2014-04-06_V3.0.11\Psychtoolbox\PsychBasic\KbCheck.m</file>
       <file>C:\Users\Administrator\Desktop\Psychtoolbox-3-PTB_Beta-2014-04-06_V3.0.11\Psychtoolbox\PsychBasic\KbName.m</file>
       <file>C:\Users\Administrator\Desktop\Psychtoolbox-3-PTB_Beta-2014-04-06_V3.0.11\Psychtoolbox\PsychBasic\KbPressWait.m</file>
